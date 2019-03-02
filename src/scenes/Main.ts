@@ -42,10 +42,31 @@ export class Main extends Phaser.Scene {
     // @ts-ignore
     react3go.setRotation(rot);
 
-    const honeycomb1 = new InitialHoneycomb(this, 250, 300);
-    const honeycomb2 = new InitialHoneycomb(this, 150, 300);
+    const rightHoneycomb = new InitialHoneycomb(this, 250, 300);
+    const leftHoneycomb = new InitialHoneycomb(this, 150, 300);
 
-    new BuiltHoneycomb(this, 250, 280);
+    const rightHoneycombPosition = new Phaser.Math.Vector2(rightHoneycomb.x, rightHoneycomb.y);
+    const leftHoneycombPosition = new Phaser.Math.Vector2(leftHoneycomb.x, leftHoneycomb.y);
+
+    const rightToLeftHoneycomb = rightHoneycombPosition.subtract(leftHoneycombPosition);
+    const distanceBetweenHoneycombs = rightToLeftHoneycomb.length();
+    const directionBetweenHoneycombs = rightToLeftHoneycomb.normalize();
+    const xDir = directionBetweenHoneycombs.x;
+    const yDir = directionBetweenHoneycombs.y;
+
+    const steps = 5;
+    const stepLength = distanceBetweenHoneycombs / steps;
+
+    for (let i = 1; i <= steps; ++i) {
+      const newHoneycombPosition = directionBetweenHoneycombs.add(
+        new Phaser.Math.Vector2(stepLength * xDir, stepLength * yDir),
+      );
+      new BuiltHoneycomb(
+        this,
+        leftHoneycomb.x + newHoneycombPosition.x,
+        leftHoneycomb.y + newHoneycombPosition.y,
+      );
+    }
 
     this.bees.push(new Bee(this, 400, 100));
     this.bees.push(new Bee(this, 400, 70));
@@ -61,9 +82,9 @@ export class Main extends Phaser.Scene {
       callback: () => {
         // this.bees[1].moveTo(150, 100);
         // this.bees[2].moveTo(150, 100);
-        this.bees[0].moveToHoneycomb(honeycomb1);
-        this.bees[1].moveToHoneycomb(honeycomb2);
-        this.bees[2].moveToHoneycomb(honeycomb2);
+        this.bees[0].moveToHoneycomb(rightHoneycomb);
+        this.bees[1].moveToHoneycomb(leftHoneycomb);
+        this.bees[2].moveToHoneycomb(leftHoneycomb);
       },
     });
   }
