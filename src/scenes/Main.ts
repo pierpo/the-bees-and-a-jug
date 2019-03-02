@@ -78,6 +78,20 @@ export class Main extends Phaser.Scene {
       this.leftHoneycombExtremity.y + newHoneycombPosition.y,
     );
 
+    const newDistance = new Phaser.Math.Vector2(
+      this.leftHoneycombExtremity.x,
+      this.leftHoneycombExtremity.y,
+    )
+      .subtract(
+        new Phaser.Math.Vector2(this.rightHoneycombExtremity.x, this.rightHoneycombExtremity.y),
+      )
+      .length();
+
+    if (newDistance < BuiltHoneycomb.MAX_RADIUS) {
+      console.log('The hive is complete!');
+      return;
+    }
+
     this.time.addEvent({
       delay: 2000,
       callbackScope: this,
