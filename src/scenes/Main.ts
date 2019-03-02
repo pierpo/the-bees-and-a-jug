@@ -80,13 +80,26 @@ export class Main extends Phaser.Scene {
       });
     });
 
-    if (!this.shouldBuildNewHoneycombs()) {
+    if (this.isHiveComplete()) {
       this.leftHoneycombExtremity.on(BuiltHoneycomb.BUILT_EVENT, () => {
         console.log('The hive is complete!');
       });
     }
 
     return newHoneycomb;
+  }
+
+  public isHiveComplete(): boolean {
+    const newDistance = new Phaser.Math.Vector2(
+      this.leftHoneycombExtremity.x,
+      this.leftHoneycombExtremity.y,
+    )
+      .subtract(
+        new Phaser.Math.Vector2(this.rightHoneycombExtremity.x, this.rightHoneycombExtremity.y),
+      )
+      .length();
+
+    return newDistance < 2 * BuiltHoneycomb.MAX_RADIUS;
   }
 
   public shouldBuildNewHoneycombs(): boolean {

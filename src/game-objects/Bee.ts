@@ -101,6 +101,7 @@ export class Bee extends Phaser.GameObjects.Arc {
     const goToFlower = () => {
       this.moveTo(200, 50).then(() => {
         return this.moveTo(400, 300).then(() => {
+          if (this.scene.isHiveComplete()) return;
           this.buildHoneycomb();
         });
       });
