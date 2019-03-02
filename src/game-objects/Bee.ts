@@ -46,15 +46,8 @@ export class Bee extends Phaser.GameObjects.Arc {
 
   public moveTo(x: number, y: number): Promise<void> {
     return new Promise(resolve => {
-      // Move with a debounce to not have all the bees at once
-      this.scene.time.addEvent({
-        delay: 200 * Math.random(),
-        callbackScope: this,
-        callback: () => {
-          this.xGoal = x;
-          this.yGoal = y;
-        },
-      });
+      this.xGoal = x;
+      this.yGoal = y;
 
       const hasArrivedAction = () => {
         this.off(Bee.HAS_ARRIVED_EVENT, hasArrivedAction);
@@ -183,6 +176,7 @@ export class Bee extends Phaser.GameObjects.Arc {
       },
     });
   }
+
   private checkHasArrived(): void {
     const { x, y } = this.getPositionTendency();
 
