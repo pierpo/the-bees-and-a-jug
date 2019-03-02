@@ -46,13 +46,12 @@ export class Main extends Phaser.Scene {
     new Honeycomb(this, 150, 300);
 
     this.bee = new Bee(this, 400, 100);
-    new Bee(this, 400, 70);
-    new Bee(this, 380, 50);
-    new Bee(this, 420, 70);
+    // new Bee(this, 400, 70);
+    // new Bee(this, 380, 50);
+    // new Bee(this, 420, 70);
   }
 
-  //   public update() {
-  //     // @ts-ignore
-  //     this.bee.matterGameObject.thrust(0.0001);
-  //   }
+  public update() {
+    this.bee.update();
+  }
 }
