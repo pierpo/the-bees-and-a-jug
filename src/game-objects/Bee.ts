@@ -1,6 +1,7 @@
 import { Honeycomb } from './Honeycomb';
 import { BuiltHoneycomb } from './BuiltHoneycomb';
 import { Main } from '../scenes/Main';
+import { randomRange } from '../services/random-range';
 
 const NUMBER_OF_STORED_POSITIONS = 10;
 
@@ -16,6 +17,9 @@ export class Bee extends Phaser.GameObjects.Sprite {
   static FRICTION = 0.15;
   static FLY_FREQUENCY = 250;
   static COLOR = 0xf9de8f;
+
+  static WAYPOINT_1 = { x: 200, y: 50 };
+  static WAYPOINT_2 = { x: 400, y: 300 };
 
   private xGoal;
   private yGoal;
@@ -100,8 +104,14 @@ export class Bee extends Phaser.GameObjects.Sprite {
     this.moveToHoneycomb(honeycomb).then();
 
     const goToFlower = () => {
-      this.moveTo(200, 50).then(() => {
-        return this.moveTo(400, 300).then(() => {
+      this.moveTo(
+        Bee.WAYPOINT_1.x + randomRange(-40, 40),
+        Bee.WAYPOINT_1.y + randomRange(-40, 40),
+      ).then(() => {
+        return this.moveTo(
+          Bee.WAYPOINT_2.x + randomRange(-40, 40),
+          Bee.WAYPOINT_2.y + randomRange(-40, 40),
+        ).then(() => {
           if (this.scene.isHiveComplete()) return;
           this.buildHoneycomb();
         });
