@@ -1,6 +1,7 @@
 import { InitialHoneycomb } from '../game-objects/InitialHoneycomb';
 import { Bee } from '../game-objects/Bee';
 import { BuiltHoneycomb } from '../game-objects/BuiltHoneycomb';
+import { Honeycomb } from '../game-objects/Honeycomb';
 
 export class Main extends Phaser.Scene {
   constructor(key: string) {
@@ -9,8 +10,8 @@ export class Main extends Phaser.Scene {
 
   static RED_COLOR = 0xffa2a9;
 
-  leftInitialHoneycomb: InitialHoneycomb;
-  rightInitialHoneycomb: InitialHoneycomb;
+  private leftHoneycombExtremity: Honeycomb;
+  private rightHoneycombExtremity: Honeycomb;
 
   bees: Bee[] = [];
 
@@ -42,44 +43,52 @@ export class Main extends Phaser.Scene {
     this.bees[1].moveTo(350, 300);
     this.bees[2].moveTo(350, 300);
 
+    this.newRightHoneycomb();
     this.time.addEvent({
       delay: 4000,
       callbackScope: this,
       callback: () => {
-        this.bees[0].moveToHoneycomb(this.rightInitialHoneycomb);
-        this.bees[1].moveToHoneycomb(this.leftInitialHoneycomb);
-        this.bees[2].moveToHoneycomb(this.leftInitialHoneycomb);
+        this.bees[0].moveToHoneycomb(this.rightHoneycombExtremity);
+        this.bees[1].moveToHoneycomb(this.leftHoneycombExtremity);
+        this.bees[2].moveToHoneycomb(this.leftHoneycombExtremity);
+      },
+    });
+  }
+
+  private newRightHoneycomb() {
+    const rightHoneycombPosition = new Phaser.Math.Vector2(
+      this.rightHoneycombExtremity.x,
+      this.rightHoneycombExtremity.y,
+    );
+    const leftHoneycombPosition = new Phaser.Math.Vector2(
+      this.leftHoneycombExtremity.x,
+      this.leftHoneycombExtremity.y,
+    );
+    const rightToLeftHoneycomb = rightHoneycombPosition.subtract(leftHoneycombPosition);
+    const directionBetweenHoneycombs = rightToLeftHoneycomb.normalize();
+    const xDir = directionBetweenHoneycombs.x;
+    const yDir = directionBetweenHoneycombs.y;
+    const stepLength = 2 * BuiltHoneycomb.MAX_RADIUS;
+    const newHoneycombPosition = directionBetweenHoneycombs.add(
+      new Phaser.Math.Vector2(stepLength * xDir, stepLength * yDir),
+    );
+    this.leftHoneycombExtremity = new BuiltHoneycomb(
+      this,
+      this.leftHoneycombExtremity.x + newHoneycombPosition.x,
+      this.leftHoneycombExtremity.y + newHoneycombPosition.y,
+    );
+
+    this.time.addEvent({
+      delay: 2000,
+      callbackScope: this,
+      callback: () => {
+        this.newRightHoneycomb();
       },
     });
   }
 
   private initHoneycombs() {
-    this.rightInitialHoneycomb = new InitialHoneycomb(this, 250, 300);
-    this.leftInitialHoneycomb = new InitialHoneycomb(this, 150, 300);
-    const rightHoneycombPosition = new Phaser.Math.Vector2(
-      this.rightInitialHoneycomb.x,
-      this.rightInitialHoneycomb.y,
-    );
-    const leftHoneycombPosition = new Phaser.Math.Vector2(
-      this.leftInitialHoneycomb.x,
-      this.leftInitialHoneycomb.y,
-    );
-    const rightToLeftHoneycomb = rightHoneycombPosition.subtract(leftHoneycombPosition);
-    const distanceBetweenHoneycombs = rightToLeftHoneycomb.length();
-    const directionBetweenHoneycombs = rightToLeftHoneycomb.normalize();
-    const xDir = directionBetweenHoneycombs.x;
-    const yDir = directionBetweenHoneycombs.y;
-    const steps = 5;
-    const stepLength = distanceBetweenHoneycombs / steps;
-    for (let i = 0; i < steps; ++i) {
-      const newHoneycombPosition = directionBetweenHoneycombs.add(
-        new Phaser.Math.Vector2(stepLength * xDir, stepLength * yDir),
-      );
-      new BuiltHoneycomb(
-        this,
-        this.leftInitialHoneycomb.x + newHoneycombPosition.x,
-        this.leftInitialHoneycomb.y + newHoneycombPosition.y,
-      );
-    }
+    this.rightHoneycombExtremity = new InitialHoneycomb(this, 250, 300);
+    this.leftHoneycombExtremity = new InitialHoneycomb(this, 150, 300);
   }
 }
