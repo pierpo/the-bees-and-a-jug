@@ -5,6 +5,10 @@ export class Bee extends Phaser.GameObjects.Arc {
   public scene: Phaser.Scene;
 
   static RADIUS = 15;
+  static THRUST_POWER = 0.02;
+  static MASS = 0.5;
+
+  private xGoal = 100;
 
   getMass(): number {
     // @ts-ignore
@@ -28,13 +32,11 @@ export class Bee extends Phaser.GameObjects.Arc {
     });
 
     // @ts-ignore
-    this.matterGameObject.setAngle(60);
-
-    // @ts-ignore
     this.matterGameObject.setFrictionAir(0.15);
 
     // @ts-ignore
-    this.matterGameObject.applyForce(new Phaser.Math.Vector2(-0.08 * this.getMass(), 0));
+    this.matterGameObject.setMass(Bee.MASS);
+
     this.fly();
   }
 
@@ -42,48 +44,44 @@ export class Bee extends Phaser.GameObjects.Arc {
     this.adjustTrajectory();
   }
 
-  public stabilize() {
-    const ang = this.getAngle();
-    const distToIdeal = -(0.1 * (ang - 90)) / 360;
-    // @ts-ignore
-    this.matterGameObject.setAngularVelocity(distToIdeal);
+  public computeVelocityStabilizerAngle(velocityX: number) {
+    return 90 + Phaser.Math.RadToDeg(Math.atan(velocityX)) / 2;
+  }
 
-    console.log('angle: ', ang);
-    // if (ang > 100) {
-    //   // @ts-ignore
-    //   this.matterGameObject.setAngularVelocity(-0.1 * distToIdeal);
-    // }
-    // if (ang < 80) {
-    //   // @ts-ignore
-    //   this.matterGameObject.setAngularVelocity(0.1 * distToIdeal);
-    // }
+  public computeGoalAngle(xDiffToGoal: number) {
+    return 90 + Phaser.Math.RadToDeg(Math.atan(xDiffToGoal)) / 2;
+  }
+
+  public computeAdjustmentAngle(angle, velocityX) {
+    const WEIGHT = 0.5;
+
+    const velocityStabilizerAngle = this.computeVelocityStabilizerAngle(velocityX);
+
+    // @ts-ignore
+    const xDiffToGoal = this.xGoal - this.matterGameObject.body.position.x;
+    const xGoalAngle = this.computeGoalAngle(xDiffToGoal);
+
+    const aimedAngle = (velocityStabilizerAngle + xGoalAngle) / 2;
+
+    return (WEIGHT * (aimedAngle - angle)) / 360;
   }
 
   public adjustTrajectory() {
     // @ts-ignore
     const ang = this.getAngle();
+
     // @ts-ignore
     const velX = this.matterGameObject.body.velocity.x;
 
-    // console.log('velX: ', velX);
+    const distToIdeal = this.computeAdjustmentAngle(ang, velX);
 
-    const distToIdeal = (0.1 * (90 - ang)) / 360 - velX / 10;
-    console.log('distToIdeal: ', distToIdeal);
     // @ts-ignore
     this.matterGameObject.setAngularVelocity(distToIdeal);
-
-    if (velX < 0) {
-      // @ts-ignore
-      // this.matterGameObject.setAngularVelocity(0.1);
-    } else {
-      // @ts-ignore
-      // this.matterGameObject.setAngularVelocity(-0.1);
-    }
   }
 
   private fly() {
     // @ts-ignore
-    this.matterGameObject.thrust(-0.01 * this.getMass());
+    this.matterGameObject.thrust(-Bee.THRUST_POWER * this.getMass());
 
     this.scene.time.addEvent({
       delay: 200,
