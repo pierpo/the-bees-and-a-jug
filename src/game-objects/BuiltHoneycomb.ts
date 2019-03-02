@@ -13,6 +13,8 @@ export class BuiltHoneycomb extends Honeycomb {
 
   private scale = 1;
   private _hasBeenTouchedByBee = false;
+  private _isComplete = false;
+
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, BuiltHoneycomb.RADIUS, 0, 360, false, BuiltHoneycomb.COLOR);
     this.scene = scene;
@@ -49,6 +51,7 @@ export class BuiltHoneycomb extends Honeycomb {
 
     if (!this.shouldGrow()) {
       this.emit(BuiltHoneycomb.BUILT_EVENT);
+      this.isComplete = true;
     }
   }
 
@@ -58,5 +61,13 @@ export class BuiltHoneycomb extends Honeycomb {
 
   public set hasBeenTouchedByBee(value) {
     this._hasBeenTouchedByBee = value;
+  }
+
+  public get isComplete() {
+    return this._isComplete;
+  }
+
+  public set isComplete(value) {
+    this._isComplete = value;
   }
 }

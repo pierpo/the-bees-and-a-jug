@@ -36,11 +36,19 @@ export class Main extends Phaser.Scene {
     this.initHoneycombs();
 
     this.bees.push(new Bee(this, 400, 100));
+    this.bees.push(new Bee(this, 400, 100));
+    this.bees.push(new Bee(this, 400, 100));
 
     this.bees[0].buildHoneycomb();
+    this.bees[1].buildHoneycomb();
+    this.bees[2].buildHoneycomb();
   }
 
-  public newLeftHoneycomb() {
+  public tryNewLeftHoneycomb(): BuiltHoneycomb {
+    if (!this.shouldBuildNewHoneycombs() && this.leftHoneycombExtremity instanceof BuiltHoneycomb) {
+      return this.leftHoneycombExtremity;
+    }
+
     const rightHoneycombPosition = new Phaser.Math.Vector2(
       this.rightHoneycombExtremity.x,
       this.rightHoneycombExtremity.y,
@@ -57,11 +65,13 @@ export class Main extends Phaser.Scene {
     const newHoneycombPosition = directionBetweenHoneycombs.add(
       new Phaser.Math.Vector2(stepLength * xDir, stepLength * yDir),
     );
-    this.leftHoneycombExtremity = new BuiltHoneycomb(
+
+    const newHoneycomb = new BuiltHoneycomb(
       this,
       this.leftHoneycombExtremity.x + newHoneycombPosition.x,
       this.leftHoneycombExtremity.y + newHoneycombPosition.y,
     );
+    this.leftHoneycombExtremity = newHoneycomb;
 
     const unsubscribeList = { list: [] };
     const unsubscribeAll = () => {
@@ -88,9 +98,15 @@ export class Main extends Phaser.Scene {
         console.log('The hive is complete!');
       });
     }
+
+    return newHoneycomb;
   }
 
   public shouldBuildNewHoneycombs(): boolean {
+    if (!(this.leftHoneycombExtremity instanceof BuiltHoneycomb)) {
+      return true;
+    }
+
     const newDistance = new Phaser.Math.Vector2(
       this.leftHoneycombExtremity.x,
       this.leftHoneycombExtremity.y,
@@ -100,7 +116,10 @@ export class Main extends Phaser.Scene {
       )
       .length();
 
-    return newDistance >= 2 * BuiltHoneycomb.MAX_RADIUS;
+    const isFarEnough = newDistance >= 2 * BuiltHoneycomb.MAX_RADIUS;
+    const isCurrentHoneycombComplete = this.leftHoneycombExtremity.isComplete;
+
+    return isFarEnough && isCurrentHoneycombComplete;
   }
 
   private initHoneycombs() {

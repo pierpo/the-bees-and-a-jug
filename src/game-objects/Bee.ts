@@ -94,23 +94,19 @@ export class Bee extends Phaser.GameObjects.Arc {
   }
 
   public buildHoneycomb() {
-    this.scene.newLeftHoneycomb();
-    const honeycomb = this.scene.leftHoneycombExtremity;
+    const honeycomb = this.scene.tryNewLeftHoneycomb();
 
-    if (honeycomb instanceof BuiltHoneycomb) {
-      this.moveToHoneycomb(honeycomb).then();
+    this.moveToHoneycomb(honeycomb).then();
 
-      const goToFlower = () => {
-        this.moveTo(200, 50).then(() => {
-          return this.moveTo(400, 300).then(() => {
-            if (!this.scene.shouldBuildNewHoneycombs()) return;
-            this.buildHoneycomb();
-          });
+    const goToFlower = () => {
+      this.moveTo(200, 50).then(() => {
+        return this.moveTo(400, 300).then(() => {
+          this.buildHoneycomb();
         });
-      };
+      });
+    };
 
-      honeycomb.on(BuiltHoneycomb.BUILT_EVENT, goToFlower);
-    }
+    honeycomb.on(BuiltHoneycomb.BUILT_EVENT, goToFlower);
   }
 
   public preUpdate() {
