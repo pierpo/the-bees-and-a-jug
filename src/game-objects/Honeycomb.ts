@@ -1,7 +1,7 @@
 import { Main } from '../scenes/Main';
 
 export class Honeycomb extends Phaser.GameObjects.Arc {
-  public matterGameObject: Phaser.GameObjects.GameObject;
+  public matterGameObject: any;
   public scene: Phaser.Scene;
 
   static RADIUS = 10;
@@ -12,7 +12,6 @@ export class Honeycomb extends Phaser.GameObjects.Arc {
 
     scene.add.existing(this);
 
-    // @ts-ignore
     this.matterGameObject = this.scene.matter.add.gameObject(this, {
       shape: { type: 'circle', radius: Honeycomb.RADIUS },
       isStatic: true,
