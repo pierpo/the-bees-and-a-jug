@@ -10,6 +10,8 @@ export class Main extends Phaser.Scene {
   static RED_COLOR = 0xffa2a9;
 
   bee: Bee;
+  bee2: Bee;
+  bee3: Bee;
 
   protected create() {
     this.matter.world.setBounds();
@@ -46,12 +48,17 @@ export class Main extends Phaser.Scene {
     new Honeycomb(this, 150, 300);
 
     this.bee = new Bee(this, 400, 100);
-    // new Bee(this, 400, 70);
-    // new Bee(this, 380, 50);
+    this.bee.moveTo(350, 300);
+    this.bee2 = new Bee(this, 400, 70);
+    this.bee2.moveTo(350, 300);
+    this.bee3 = new Bee(this, 380, 50);
+    this.bee3.moveTo(350, 300);
     // new Bee(this, 420, 70);
   }
 
   public update() {
     this.bee.update();
+    this.bee2.update();
+    this.bee3.update();
   }
 }
