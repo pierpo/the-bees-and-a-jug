@@ -1,8 +1,8 @@
-import { InitialHoneycomb } from '../game-objects/InitialHoneycomb';
 import { Bee } from '../game-objects/Bee';
 import { BuiltHoneycomb } from '../game-objects/BuiltHoneycomb';
 import { Honeycomb } from '../game-objects/Honeycomb';
 import { randomRange } from '../services/random-range';
+import { Jug } from '../game-objects/Jug';
 
 export class Main extends Phaser.Scene {
   static RED_COLOR = 0xffc4c8;
@@ -13,17 +13,30 @@ export class Main extends Phaser.Scene {
     super(Main.SCENE_KEY);
   }
 
-  public leftHoneycombExtremity: Honeycomb;
-  public rightHoneycombExtremity: Honeycomb;
+  private bees: Bee[] = [];
 
-  bees: Bee[] = [];
+  private _leftHoneycombExtremity: Honeycomb;
+  private _rightHoneycombExtremity: Honeycomb;
+
+  public get leftHoneycombExtremity(): Honeycomb {
+    return this._leftHoneycombExtremity;
+  }
+
+  public set leftHoneycombExtremity(value: Honeycomb) {
+    this._leftHoneycombExtremity = value;
+  }
+
+  public get rightHoneycombExtremity(): Honeycomb {
+    return this._rightHoneycombExtremity;
+  }
+  public set rightHoneycombExtremity(value: Honeycomb) {
+    this._rightHoneycombExtremity = value;
+  }
 
   protected create() {
     this.matter.world.setBounds();
 
-    this.initRectangles();
-
-    this.initHoneycombs();
+    new Jug(this);
 
     const newRandomBee = () => {
       return new Bee(this, 400 + randomRange(-30, 30), 100 + randomRange(-30, 30));
@@ -35,7 +48,7 @@ export class Main extends Phaser.Scene {
 
     this.bees.forEach(bee => {
       this.time.addEvent({
-        delay: 3000 * Math.random(),
+        delay: 8000 * Math.random(),
         callbackScope: this,
         callback: () => {
           bee.buildHoneycomb();
@@ -139,24 +152,5 @@ export class Main extends Phaser.Scene {
     const isCurrentHoneycombComplete = this.leftHoneycombExtremity.isComplete;
 
     return isFarEnough && isCurrentHoneycombComplete;
-  }
-
-  private initHoneycombs() {
-    this.rightHoneycombExtremity = new InitialHoneycomb(this, 250, 300);
-    this.leftHoneycombExtremity = new InitialHoneycomb(this, 150, 250);
-  }
-
-  private initRectangles() {
-    const rot = Phaser.Math.DegToRad(90);
-    const ground = this.add.rectangle(200, 400, 100, 10, Main.RED_COLOR);
-    this.matter.add.gameObject(ground, { isStatic: true });
-    const left = this.add.rectangle(150, 325, 150, 10, Main.RED_COLOR);
-    const leftGO = this.matter.add.gameObject(left, { isStatic: true });
-    // @ts-ignore
-    leftGO.setRotation(rot);
-    const right = this.add.rectangle(250, 350, 100, 10, Main.RED_COLOR);
-    const rightGO = this.matter.add.gameObject(right, { isStatic: true });
-    // @ts-ignore
-    rightGO.setRotation(rot);
   }
 }
