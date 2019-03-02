@@ -97,15 +97,15 @@ export class Bee extends Phaser.GameObjects.Arc {
     this.latestYPositions.unshift(currentY);
   }
 
-  public computeVelocityStabilizerAngle(velocityX: number) {
+  private computeVelocityStabilizerAngle(velocityX: number) {
     return 90 + Phaser.Math.RadToDeg(Math.atan(velocityX)) / 2;
   }
 
-  public computeGoalAngle(xDiffToGoal: number) {
+  private computeGoalAngle(xDiffToGoal: number) {
     return 90 + Phaser.Math.RadToDeg(Math.atan(xDiffToGoal)) / 2;
   }
 
-  public computeAdjustmentAngle(angle, velocityX) {
+  private computeAdjustmentAngle(angle, velocityX) {
     const WEIGHT = 0.5;
 
     const velocityStabilizerAngle = this.computeVelocityStabilizerAngle(velocityX);
@@ -118,7 +118,7 @@ export class Bee extends Phaser.GameObjects.Arc {
     return (WEIGHT * (aimedAngle - angle)) / 360;
   }
 
-  public computeThrust() {
+  private computeThrust() {
     const WEIGHT = 0.05;
 
     const yPositionTendency = this.getPositionTendency().y;
@@ -130,7 +130,7 @@ export class Bee extends Phaser.GameObjects.Arc {
     return -adjustment * Bee.THRUST_POWER * this.getMass();
   }
 
-  public adjustTrajectory() {
+  private adjustTrajectory() {
     const ang = this.getAngle();
 
     const velX = this.matterGameObject.body.velocity.x;
