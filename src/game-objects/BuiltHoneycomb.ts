@@ -4,6 +4,8 @@ export class BuiltHoneycomb extends Honeycomb {
   public matterGameObject: any;
   public scene: Phaser.Scene;
 
+  static BUILT_EVENT = 'built';
+
   static RADIUS = 2;
   static MAX_RADIUS = 10;
   static GROW_SPEED = 0.005;
@@ -41,7 +43,7 @@ export class BuiltHoneycomb extends Honeycomb {
     this.matterGameObject.setScale(this.scale);
 
     if (!this.shouldGrow()) {
-      this.emit('built');
+      this.emit(BuiltHoneycomb.BUILT_EVENT);
     }
   }
 }
