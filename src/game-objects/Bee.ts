@@ -1,11 +1,12 @@
 import { Honeycomb } from './Honeycomb';
 import { BuiltHoneycomb } from './BuiltHoneycomb';
+import { Main } from '../scenes/Main';
 
 const NUMBER_OF_STORED_POSITIONS = 10;
 
 export class Bee extends Phaser.GameObjects.Arc {
   public matterGameObject: any;
-  public scene: Phaser.Scene;
+  public scene: Main;
 
   static HAS_ARRIVED_EVENT = 'has-arrived';
 
@@ -22,7 +23,7 @@ export class Bee extends Phaser.GameObjects.Arc {
   private latestYPositions = [];
   private latestXPositions = [];
 
-  constructor(scene: Phaser.Scene, x: number, y: number) {
+  constructor(scene: Main, x: number, y: number) {
     super(scene, x, y, Bee.RADIUS, 0, 360, false, Bee.COLOR);
     this.scene = scene;
     this.scene.add.existing(this);
@@ -92,16 +93,37 @@ export class Bee extends Phaser.GameObjects.Arc {
     return this.moveTo(honeycomb.x, honeycomb.y - 20);
   }
 
-  public buildHoneycomb(honeycomb: BuiltHoneycomb) {
-    this.moveToHoneycomb(honeycomb).then();
+  public buildHoneycomb() {
+    this.scene.newLeftHoneycomb();
+    const honeycomb = this.scene.leftHoneycombExtremity;
+    // @ts-ignore
+    this.scene.matterCollision.addOnCollideStart({
+      // TODO for all bees and cleanup afterwards
+      objectA: this,
+      objectB: honeycomb,
+      callback: function(eventData) {
+        // @ts-ignore
+        const { bodyA, bodyB, gameObjectA, gameObjectB, pair } = eventData;
 
-    const goToFlower = () => {
-      this.moveTo(400, 50).then(() => {
-        return this.moveTo(300, 300);
-      });
-    };
+        gameObjectB.hasBeenTouchedByBee = true;
+      },
+      context: this, // Context to apply to the callback function
+    });
 
-    honeycomb.on(BuiltHoneycomb.BUILT_EVENT, goToFlower);
+    if (honeycomb instanceof BuiltHoneycomb) {
+      this.moveToHoneycomb(honeycomb).then();
+
+      const goToFlower = () => {
+        this.moveTo(400, 50).then(() => {
+          return this.moveTo(300, 300).then(() => {
+            if (!this.scene.shouldBuildNewHoneycombs()) return;
+            this.buildHoneycomb();
+          });
+        });
+      };
+
+      honeycomb.on(BuiltHoneycomb.BUILT_EVENT, goToFlower);
+    }
   }
 
   public preUpdate() {

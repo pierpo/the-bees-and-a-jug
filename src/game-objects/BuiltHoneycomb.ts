@@ -55,8 +55,8 @@ export class BuiltHoneycomb extends Honeycomb {
   public get hasBeenTouchedByBee() {
     return this._hasBeenTouchedByBee;
   }
+
   public set hasBeenTouchedByBee(value) {
-    console.log('YES');
     this._hasBeenTouchedByBee = value;
   }
 }

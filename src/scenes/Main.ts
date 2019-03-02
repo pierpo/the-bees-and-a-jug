@@ -10,8 +10,8 @@ export class Main extends Phaser.Scene {
 
   static RED_COLOR = 0xffa2a9;
 
-  private leftHoneycombExtremity: Honeycomb;
-  private rightHoneycombExtremity: Honeycomb;
+  public leftHoneycombExtremity: Honeycomb;
+  public rightHoneycombExtremity: Honeycomb;
 
   bees: Bee[] = [];
 
@@ -37,30 +37,10 @@ export class Main extends Phaser.Scene {
 
     this.bees.push(new Bee(this, 400, 100));
 
-    // this.bees[0].moveTo(350, 300);
-
-    this.newLeftHoneycomb();
-
-    const current = this.leftHoneycombExtremity;
-    // @ts-ignore
-    this.matterCollision.addOnCollideStart({
-      objectA: this.bees[0],
-      objectB: current,
-      callback: function(eventData) {
-        // @ts-ignore
-        const { bodyA, bodyB, gameObjectA, gameObjectB, pair } = eventData;
-
-        gameObjectB.hasBeenTouchedByBee = true;
-      },
-      context: this, // Context to apply to the callback function
-    });
-
-    if (current instanceof BuiltHoneycomb) {
-      this.bees[0].buildHoneycomb(current);
-    }
+    this.bees[0].buildHoneycomb();
   }
 
-  private newLeftHoneycomb() {
+  public newLeftHoneycomb() {
     const rightHoneycombPosition = new Phaser.Math.Vector2(
       this.rightHoneycombExtremity.x,
       this.rightHoneycombExtremity.y,
@@ -83,6 +63,14 @@ export class Main extends Phaser.Scene {
       this.leftHoneycombExtremity.y + newHoneycombPosition.y,
     );
 
+    if (!this.shouldBuildNewHoneycombs()) {
+      this.leftHoneycombExtremity.on(BuiltHoneycomb.BUILT_EVENT, () => {
+        console.log('The hive is complete!');
+      });
+    }
+  }
+
+  public shouldBuildNewHoneycombs(): boolean {
     const newDistance = new Phaser.Math.Vector2(
       this.leftHoneycombExtremity.x,
       this.leftHoneycombExtremity.y,
@@ -92,12 +80,7 @@ export class Main extends Phaser.Scene {
       )
       .length();
 
-    if (newDistance < 2 * BuiltHoneycomb.MAX_RADIUS) {
-      this.leftHoneycombExtremity.on(BuiltHoneycomb.BUILT_EVENT, () => {
-        console.log('The hive is complete!');
-      });
-      return;
-    }
+    return newDistance >= 2 * BuiltHoneycomb.MAX_RADIUS;
   }
 
   private initHoneycombs() {
