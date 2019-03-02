@@ -30200,7 +30200,7 @@ declare namespace Phaser {
          * The Shape Game Object is a base class for the various different shapes, such as the Arc, Star or Polygon.
          * You cannot add a Shape directly to your Scene, it is meant as a base for your own custom Shape classes.
          */
-        class Shape extends Phaser.GameObjects.GameObject implements Phaser.GameObjects.Components.Alpha, Phaser.GameObjects.Components.BlendMode, Phaser.GameObjects.Components.ComputedSize, Phaser.GameObjects.Components.Depth, Phaser.GameObjects.Components.GetBounds, Phaser.GameObjects.Components.Mask, Phaser.GameObjects.Components.Origin, Phaser.GameObjects.Components.Pipeline, Phaser.GameObjects.Components.ScaleMode, Phaser.GameObjects.Components.ScrollFactor, Phaser.GameObjects.Components.Transform, Phaser.GameObjects.Components.Visible {
+        class Shape extends Phaser.GameObjects.GameObject implements Phaser.GameObjects.Components.Alpha, Phaser.GameObjects.Components.BlendMode, Phaser.GameObjects.Components.ComputedSize, Phaser.GameObjects.Components.Depth, Phaser.GameObjects.Components.GetBounds, Phaser.GameObjects.Components.Mask, Phaser.GameObjects.Components.Origin, Phaser.GameObjects.Components.Pipeline, Phaser.GameObjects.Components.ScaleMode, Phaser.GameObjects.Components.ScrollFactor, Phaser.GameObjects.Components.Transform, Phaser.GameObjects.Components.Visible, Phaser.Physics.Matter.Components.Bounce, Phaser.Physics.Matter.Components.Collision, Phaser.Physics.Matter.Components.Force, Phaser.Physics.Matter.Components.Friction, Phaser.Physics.Matter.Components.Gravity, Phaser.Physics.Matter.Components.Mass, Phaser.Physics.Matter.Components.Sensor, Phaser.Physics.Matter.Components.SetBody, Phaser.Physics.Matter.Components.Sleep, Phaser.Physics.Matter.Components.Static, Phaser.Physics.Matter.Components.Transform, Phaser.Physics.Matter.Components.Velocity {
             /**
              * 
              * @param scene The Scene to which this Game Object belongs. A Game Object can only belong to one Scene at a time.
@@ -30901,6 +30901,44 @@ declare namespace Phaser {
              * @param value The visible state of the Game Object.
              */
             setVisible(value: boolean): this;
+
+
+            applyForce(force: Phaser.Math.Vector2): this;
+            applyForceFrom(position: Phaser.Math.Vector2, force: Phaser.Math.Vector2): this;
+            centerOfMass: any;
+            isSensor(): boolean;
+            isStatic(): boolean;
+            setAngularVelocity(value: number): this;
+            setBody(config: object, options: object): this;
+            setBounce(x: number, y?: number): this;
+            setCircle(radius: number, options: object): this;
+            setCollidesWith(categories: number | number[]): this;
+            setCollisionCategory(value: number): this;
+            setCollisionGroup(value: number): this;
+            setDensity(value: number): this;
+            setExistingBody: (value: boolean) => this;
+            setFixedRotation(): this;
+            setFriction(value: number, air?: number, fstatic?: number): this;
+            setFrictionAir(value: number): this;
+            setFrictionStatic(value: number): this;
+            setIgnoreGravity(value: boolean): this;
+            setMass(value: number): this;
+            setPolygon(radius: number, sides: number, options: object): this;
+            setRectangle(width: number, height: number, options: object): this;
+            setSensor(value: boolean): this;
+            setSleepEndEvent: (value: boolean) => GameObject;
+            setSleepEvents(start: boolean, end: boolean): this;
+            setSleepStartEvent: (value: boolean) => GameObject;
+            setSleepThreshold(value?: number): this;
+            setStatic(value: boolean): this;
+            setTrapezoid(width: number, height: number, slope: number, options: object): this;
+            setVelocity(x: number, y?: number): this;
+            setVelocityX(x: number): this;
+            setVelocityY(y: number): this;
+            thrust: (speed: number) => this;
+            thrustBack: (speed: number) => this;
+            thrustLeft: (speed: number) => this;
+            thrustRight: (speed: number) => this;
 
         }
 
