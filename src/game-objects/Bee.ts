@@ -114,8 +114,8 @@ export class Bee extends Phaser.GameObjects.Arc {
       this.moveToHoneycomb(honeycomb).then();
 
       const goToFlower = () => {
-        this.moveTo(400, 50).then(() => {
-          return this.moveTo(300, 300).then(() => {
+        this.moveTo(200, 50).then(() => {
+          return this.moveTo(400, 300).then(() => {
             if (!this.scene.shouldBuildNewHoneycombs()) return;
             this.buildHoneycomb();
           });
@@ -161,6 +161,7 @@ export class Bee extends Phaser.GameObjects.Arc {
 
   private computeThrust() {
     const WEIGHT = 0.08;
+    const DOWN_DIRECTION_WEIGHT = 0.2;
 
     const yPositionTendency = this.getPositionTendency().y;
 
@@ -170,7 +171,7 @@ export class Bee extends Phaser.GameObjects.Arc {
 
     let finalAdjustment = adjustment;
     if (adjustment < 0) {
-      finalAdjustment = -adjustment / 4;
+      finalAdjustment = -adjustment * DOWN_DIRECTION_WEIGHT;
     }
 
     return -finalAdjustment * Bee.THRUST_POWER * this.getMass();
