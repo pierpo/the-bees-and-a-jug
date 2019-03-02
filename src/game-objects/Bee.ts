@@ -7,10 +7,10 @@ export class Bee extends Phaser.GameObjects.Arc {
   public scene: Phaser.Scene;
 
   static RADIUS = 5;
-  static THRUST_POWER = 0.04;
-  static MASS = 0.5;
+  static THRUST_POWER = 0.05;
+  static MASS = 0.4;
   static FRICTION = 0.15;
-  static FLY_FREQUENCY = 150;
+  static FLY_FREQUENCY = 250;
   static COLOR = 0xffe597;
 
   private xGoal;
@@ -72,6 +72,8 @@ export class Bee extends Phaser.GameObjects.Arc {
       shape: { type: 'circle', radius: Bee.RADIUS },
     });
 
+    this.matterGameObject.setAngle(90);
+
     this.matterGameObject.setFrictionAir(Bee.FRICTION);
 
     this.matterGameObject.setMass(Bee.MASS);
@@ -119,7 +121,7 @@ export class Bee extends Phaser.GameObjects.Arc {
   }
 
   private computeThrust() {
-    const WEIGHT = 0.05;
+    const WEIGHT = 0.08;
 
     const yPositionTendency = this.getPositionTendency().y;
 
@@ -127,7 +129,12 @@ export class Bee extends Phaser.GameObjects.Arc {
 
     const adjustment = (-Math.atan(yDiffToGoal * WEIGHT) * 4) / Phaser.Math.PI2;
 
-    return -adjustment * Bee.THRUST_POWER * this.getMass();
+    let finalAdjustment = adjustment;
+    if (adjustment < 0) {
+      finalAdjustment = -adjustment / 4;
+    }
+
+    return -finalAdjustment * Bee.THRUST_POWER * this.getMass();
   }
 
   private adjustTrajectory() {
