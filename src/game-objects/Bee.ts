@@ -1,4 +1,4 @@
-import { Honeycomb } from './Honeycomb';
+import { InitialHoneycomb } from './InitialHoneycomb';
 
 const NUMBER_OF_STORED_POSITIONS = 10;
 
@@ -53,7 +53,7 @@ export class Bee extends Phaser.GameObjects.Arc {
     });
   }
 
-  public moveToHoneycomb(honeycomb: Honeycomb) {
+  public moveToHoneycomb(honeycomb: InitialHoneycomb) {
     this.moveTo(honeycomb.x, honeycomb.y - 20);
   }
 
