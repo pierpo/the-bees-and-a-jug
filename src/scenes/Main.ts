@@ -67,10 +67,4 @@ export class Main extends Phaser.Scene {
       },
     });
   }
-
-  public update() {
-    this.bees.map(bee => {
-      bee.update();
-    });
-  }
 }

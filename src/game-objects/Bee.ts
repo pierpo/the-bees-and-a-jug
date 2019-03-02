@@ -85,7 +85,7 @@ export class Bee extends Phaser.GameObjects.Arc {
     });
   }
 
-  public update() {
+  public preUpdate() {
     this.adjustTrajectory();
 
     const currentX = this.matterGameObject.body.position.x;
