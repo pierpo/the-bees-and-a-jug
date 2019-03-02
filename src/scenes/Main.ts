@@ -1,12 +1,12 @@
 import { Honeycomb } from '../game-objects/Honeycomb';
 import { Bee } from '../game-objects/Bee';
+import { BuiltHoneycomb } from '../game-objects/BuiltHoneycomb';
 
 export class Main extends Phaser.Scene {
   constructor(key: string) {
     super(key);
   }
 
-  static YELLOW_COLOR = 0xffe597;
   static RED_COLOR = 0xffa2a9;
 
   bees: Bee[] = [];
@@ -44,6 +44,8 @@ export class Main extends Phaser.Scene {
 
     const honeycomb1 = new Honeycomb(this, 250, 300);
     const honeycomb2 = new Honeycomb(this, 150, 300);
+
+    new BuiltHoneycomb(this, 250, 280);
 
     this.bees.push(new Bee(this, 400, 100));
     this.bees.push(new Bee(this, 400, 70));

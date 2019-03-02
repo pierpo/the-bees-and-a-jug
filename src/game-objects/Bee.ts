@@ -1,4 +1,3 @@
-import { Main } from '../scenes/Main';
 import { Honeycomb } from './Honeycomb';
 
 const NUMBER_OF_STORED_POSITIONS = 10;
@@ -12,6 +11,7 @@ export class Bee extends Phaser.GameObjects.Arc {
   static MASS = 0.5;
   static FRICTION = 0.15;
   static FLY_FREQUENCY = 150;
+  static COLOR = 0xffe597;
 
   private xGoal;
   private yGoal;
@@ -58,7 +58,7 @@ export class Bee extends Phaser.GameObjects.Arc {
   }
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
-    super(scene, x, y, Bee.RADIUS, 0, 360, false, Main.YELLOW_COLOR);
+    super(scene, x, y, Bee.RADIUS, 0, 360, false, Bee.COLOR);
     this.scene = scene;
     this.scene.add.existing(this);
 
