@@ -1,4 +1,4 @@
-import { Honeycomb } from '../game-objects/Honeycomb';
+import { InitialHoneycomb } from '../game-objects/InitialHoneycomb';
 import { Bee } from '../game-objects/Bee';
 import { BuiltHoneycomb } from '../game-objects/BuiltHoneycomb';
 
@@ -42,8 +42,8 @@ export class Main extends Phaser.Scene {
     // @ts-ignore
     react3go.setRotation(rot);
 
-    const honeycomb1 = new Honeycomb(this, 250, 300);
-    const honeycomb2 = new Honeycomb(this, 150, 300);
+    const honeycomb1 = new InitialHoneycomb(this, 250, 300);
+    const honeycomb2 = new InitialHoneycomb(this, 150, 300);
 
     new BuiltHoneycomb(this, 250, 280);
 

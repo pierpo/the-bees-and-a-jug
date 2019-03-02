@@ -1,6 +1,7 @@
 import { Main } from '../scenes/Main';
+import { Honeycomb } from './Honeycomb';
 
-export class InitialHoneycomb extends Phaser.GameObjects.Arc {
+export class InitialHoneycomb extends Honeycomb {
   public matterGameObject: any;
   public scene: Phaser.Scene;
 

@@ -1,4 +1,6 @@
-export class BuiltHoneycomb extends Phaser.GameObjects.Arc {
+import { Honeycomb } from './Honeycomb';
+
+export class BuiltHoneycomb extends Honeycomb {
   public matterGameObject: any;
   public scene: Phaser.Scene;
 
