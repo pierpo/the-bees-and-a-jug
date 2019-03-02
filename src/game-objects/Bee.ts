@@ -3,7 +3,7 @@ import { Main } from '../scenes/Main';
 const NUMBER_OF_STORED_POSITIONS = 10;
 
 export class Bee extends Phaser.GameObjects.Arc {
-  public matterGameObject: Phaser.GameObjects.GameObject;
+  public matterGameObject: any;
   public scene: Phaser.Scene;
 
   static RADIUS = 5;
@@ -18,12 +18,10 @@ export class Bee extends Phaser.GameObjects.Arc {
   private latestYPositions = [];
 
   getMass(): number {
-    // @ts-ignore
     return this.matterGameObject.body.mass;
   }
 
   getAngle(): number {
-    // @ts-ignore
     return this.matterGameObject.angle;
   }
 
@@ -49,15 +47,12 @@ export class Bee extends Phaser.GameObjects.Arc {
 
     this.latestYPositions = Array(NUMBER_OF_STORED_POSITIONS).fill(y);
 
-    // @ts-ignore
     this.matterGameObject = this.scene.matter.add.gameObject(this, {
       shape: { type: 'circle', radius: Bee.RADIUS },
     });
 
-    // @ts-ignore
     this.matterGameObject.setFrictionAir(Bee.FRICTION);
 
-    // @ts-ignore
     this.matterGameObject.setMass(Bee.MASS);
 
     this.fly();
@@ -74,7 +69,6 @@ export class Bee extends Phaser.GameObjects.Arc {
   public update() {
     this.adjustTrajectory();
 
-    // @ts-ignore
     const currentY = this.matterGameObject.body.position.y;
     this.latestYPositions.pop();
     this.latestYPositions.unshift(currentY);
@@ -93,7 +87,6 @@ export class Bee extends Phaser.GameObjects.Arc {
 
     const velocityStabilizerAngle = this.computeVelocityStabilizerAngle(velocityX);
 
-    // @ts-ignore
     const xDiffToGoal = this.xGoal - this.matterGameObject.body.position.x;
     const xGoalAngle = this.computeGoalAngle(xDiffToGoal);
 
@@ -110,7 +103,6 @@ export class Bee extends Phaser.GameObjects.Arc {
         return acc + v;
       }, 0) / this.latestYPositions.length;
 
-    // @ts-ignore
     const yDiffToGoal = this.yGoal - yPositionTendency;
 
     const adjustment = (-Math.atan(yDiffToGoal * WEIGHT) * 4) / Phaser.Math.PI2;
@@ -119,20 +111,16 @@ export class Bee extends Phaser.GameObjects.Arc {
   }
 
   public adjustTrajectory() {
-    // @ts-ignore
     const ang = this.getAngle();
 
-    // @ts-ignore
     const velX = this.matterGameObject.body.velocity.x;
 
     const distToIdeal = this.computeAdjustmentAngle(ang, velX);
 
-    // @ts-ignore
     this.matterGameObject.setAngularVelocity(distToIdeal);
   }
 
   private fly() {
-    // @ts-ignore
     this.matterGameObject.thrust(this.computeThrust());
 
     this.scene.time.addEvent({
