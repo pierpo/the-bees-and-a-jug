@@ -9,6 +9,9 @@ export class Main extends Phaser.Scene {
 
   static RED_COLOR = 0xffa2a9;
 
+  leftInitialHoneycomb: InitialHoneycomb;
+  rightInitialHoneycomb: InitialHoneycomb;
+
   bees: Bee[] = [];
 
   protected create() {
@@ -29,31 +32,7 @@ export class Main extends Phaser.Scene {
     // @ts-ignore
     react3go.setRotation(rot);
 
-    const rightHoneycomb = new InitialHoneycomb(this, 250, 300);
-    const leftHoneycomb = new InitialHoneycomb(this, 150, 300);
-
-    const rightHoneycombPosition = new Phaser.Math.Vector2(rightHoneycomb.x, rightHoneycomb.y);
-    const leftHoneycombPosition = new Phaser.Math.Vector2(leftHoneycomb.x, leftHoneycomb.y);
-
-    const rightToLeftHoneycomb = rightHoneycombPosition.subtract(leftHoneycombPosition);
-    const distanceBetweenHoneycombs = rightToLeftHoneycomb.length();
-    const directionBetweenHoneycombs = rightToLeftHoneycomb.normalize();
-    const xDir = directionBetweenHoneycombs.x;
-    const yDir = directionBetweenHoneycombs.y;
-
-    const steps = 5;
-    const stepLength = distanceBetweenHoneycombs / steps;
-
-    for (let i = 1; i <= steps; ++i) {
-      const newHoneycombPosition = directionBetweenHoneycombs.add(
-        new Phaser.Math.Vector2(stepLength * xDir, stepLength * yDir),
-      );
-      new BuiltHoneycomb(
-        this,
-        leftHoneycomb.x + newHoneycombPosition.x,
-        leftHoneycomb.y + newHoneycombPosition.y,
-      );
-    }
+    this.initHoneycombs();
 
     this.bees.push(new Bee(this, 400, 100));
     this.bees.push(new Bee(this, 400, 70));
@@ -67,10 +46,40 @@ export class Main extends Phaser.Scene {
       delay: 4000,
       callbackScope: this,
       callback: () => {
-        this.bees[0].moveToHoneycomb(rightHoneycomb);
-        this.bees[1].moveToHoneycomb(leftHoneycomb);
-        this.bees[2].moveToHoneycomb(leftHoneycomb);
+        this.bees[0].moveToHoneycomb(this.rightInitialHoneycomb);
+        this.bees[1].moveToHoneycomb(this.leftInitialHoneycomb);
+        this.bees[2].moveToHoneycomb(this.leftInitialHoneycomb);
       },
     });
+  }
+
+  private initHoneycombs() {
+    this.rightInitialHoneycomb = new InitialHoneycomb(this, 250, 300);
+    this.leftInitialHoneycomb = new InitialHoneycomb(this, 150, 300);
+    const rightHoneycombPosition = new Phaser.Math.Vector2(
+      this.rightInitialHoneycomb.x,
+      this.rightInitialHoneycomb.y,
+    );
+    const leftHoneycombPosition = new Phaser.Math.Vector2(
+      this.leftInitialHoneycomb.x,
+      this.leftInitialHoneycomb.y,
+    );
+    const rightToLeftHoneycomb = rightHoneycombPosition.subtract(leftHoneycombPosition);
+    const distanceBetweenHoneycombs = rightToLeftHoneycomb.length();
+    const directionBetweenHoneycombs = rightToLeftHoneycomb.normalize();
+    const xDir = directionBetweenHoneycombs.x;
+    const yDir = directionBetweenHoneycombs.y;
+    const steps = 5;
+    const stepLength = distanceBetweenHoneycombs / steps;
+    for (let i = 0; i < steps; ++i) {
+      const newHoneycombPosition = directionBetweenHoneycombs.add(
+        new Phaser.Math.Vector2(stepLength * xDir, stepLength * yDir),
+      );
+      new BuiltHoneycomb(
+        this,
+        this.leftInitialHoneycomb.x + newHoneycombPosition.x,
+        this.leftInitialHoneycomb.y + newHoneycombPosition.y,
+      );
+    }
   }
 }
