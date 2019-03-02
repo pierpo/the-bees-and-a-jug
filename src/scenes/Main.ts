@@ -2,13 +2,14 @@ import { InitialHoneycomb } from '../game-objects/InitialHoneycomb';
 import { Bee } from '../game-objects/Bee';
 import { BuiltHoneycomb } from '../game-objects/BuiltHoneycomb';
 import { Honeycomb } from '../game-objects/Honeycomb';
+import { randomRange } from '../services/random-range';
 
 export class Main extends Phaser.Scene {
-  constructor(key: string) {
-    super(key);
+  constructor() {
+    super('Main');
   }
 
-  static RED_COLOR = 0xffa2a9;
+  static RED_COLOR = 0xffc4c8;
 
   public leftHoneycombExtremity: Honeycomb;
   public rightHoneycombExtremity: Honeycomb;

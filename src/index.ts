@@ -2,6 +2,7 @@ import 'phaser';
 // @ts-ignore
 import PhaserMatterCollisionPlugin from 'phaser-matter-collision-plugin';
 import { Main } from './scenes/Main';
+import { Preloader } from './scenes/Preloader';
 
 class PhaserGame extends Phaser.Game {
   constructor() {
@@ -29,7 +30,7 @@ class PhaserGame extends Phaser.Game {
           debugShowConvexHulls: true,
         },
       },
-      scene: [Main],
+      scene: [Preloader, Main],
     };
     super(config);
   }
