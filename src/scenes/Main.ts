@@ -5,11 +5,12 @@ import { Honeycomb } from '../game-objects/Honeycomb';
 import { randomRange } from '../services/random-range';
 
 export class Main extends Phaser.Scene {
-  constructor() {
-    super('Main');
-  }
-
   static RED_COLOR = 0xffc4c8;
+  static SCENE_KEY = 'Main';
+
+  constructor() {
+    super(Main.SCENE_KEY);
+  }
 
   public leftHoneycombExtremity: Honeycomb;
   public rightHoneycombExtremity: Honeycomb;

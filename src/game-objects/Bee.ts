@@ -95,7 +95,7 @@ export class Bee extends Phaser.GameObjects.Sprite {
   }
 
   public moveToHoneycomb(honeycomb: Honeycomb): Promise<void> {
-    return this.moveTo(honeycomb.x, honeycomb.y - 20);
+    return this.moveTo(honeycomb.x, honeycomb.y - BuiltHoneycomb.MAX_RADIUS * 2);
   }
 
   public buildHoneycomb() {
