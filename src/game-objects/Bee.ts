@@ -44,35 +44,38 @@ export class Bee extends Phaser.GameObjects.Arc {
     return { x: xPositionTendency, y: yPositionTendency };
   }
 
-  public moveTo(x: number, y: number) {
-    // Move with a debounce to not have all the bees at once
-    this.scene.time.addEvent({
-      delay: 200 * Math.random(),
-      callbackScope: this,
-      callback: () => {
-        this.xGoal = x;
-        this.yGoal = y;
-      },
+  public moveTo(x: number, y: number): Promise<void> {
+    return new Promise(resolve => {
+      // Move with a debounce to not have all the bees at once
+      this.scene.time.addEvent({
+        delay: 200 * Math.random(),
+        callbackScope: this,
+        callback: () => {
+          this.xGoal = x;
+          this.yGoal = y;
+        },
+      });
+
+      const hasArrivedAction = () => {
+        this.off(Bee.HAS_ARRIVED_EVENT, hasArrivedAction);
+        resolve();
+      };
+
+      this.on(Bee.HAS_ARRIVED_EVENT, hasArrivedAction);
     });
   }
 
-  public moveToHoneycomb(honeycomb: Honeycomb) {
-    this.moveTo(honeycomb.x, honeycomb.y - 20);
+  public moveToHoneycomb(honeycomb: Honeycomb): Promise<void> {
+    return this.moveTo(honeycomb.x, honeycomb.y - 20);
   }
 
   public buildHoneycomb(honeycomb: BuiltHoneycomb) {
-    this.moveToHoneycomb(honeycomb);
+    this.moveToHoneycomb(honeycomb).then();
 
     const goToFlower = () => {
-      this.moveTo(400, 50);
-
-      const arrivedToFlower = () => {
-        console.log('done!');
-        this.off(Bee.HAS_ARRIVED_EVENT, arrivedToFlower);
-      };
-
-      honeycomb.off(BuiltHoneycomb.BUILT_EVENT, goToFlower);
-      this.on(Bee.HAS_ARRIVED_EVENT, arrivedToFlower);
+      this.moveTo(400, 50).then(() => {
+        return this.moveTo(300, 300);
+      });
     };
 
     honeycomb.on(BuiltHoneycomb.BUILT_EVENT, goToFlower);
