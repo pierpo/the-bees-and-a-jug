@@ -4,7 +4,7 @@ import { Main } from '../scenes/Main';
 
 const NUMBER_OF_STORED_POSITIONS = 10;
 
-export class Bee extends Phaser.GameObjects.Arc {
+export class Bee extends Phaser.GameObjects.Sprite {
   public matterGameObject: any;
   public scene: Main;
 
@@ -24,8 +24,9 @@ export class Bee extends Phaser.GameObjects.Arc {
   private latestXPositions = [];
 
   constructor(scene: Main, x: number, y: number) {
-    super(scene, x, y, Bee.RADIUS, 0, 360, false, Bee.COLOR);
+    super(scene, x, y, 'bee');
     this.scene = scene;
+    this.setScale(0.05);
     this.scene.add.existing(this);
 
     this.xGoal = x;
