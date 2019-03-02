@@ -1,4 +1,5 @@
 import { Honeycomb } from '../game-objects/Honeycomb';
+import { Bee } from '../game-objects/Bee';
 
 export class Main extends Phaser.Scene {
   constructor(key: string) {
@@ -8,8 +9,11 @@ export class Main extends Phaser.Scene {
   static YELLOW_COLOR = 0xffe597;
   static RED_COLOR = 0xffa2a9;
 
+  bee: Bee;
+
   protected create() {
     this.matter.world.setBounds();
+    // this.matter.world.disableGravity();
 
     // const arrow = '40 0 40 20 100 20 100 80 40 80 40 100 0 50';
 
@@ -40,5 +44,15 @@ export class Main extends Phaser.Scene {
 
     new Honeycomb(this, 250, 300);
     new Honeycomb(this, 150, 300);
+
+    this.bee = new Bee(this, 400, 100);
+    new Bee(this, 400, 70);
+    new Bee(this, 380, 50);
+    new Bee(this, 420, 70);
   }
+
+  //   public update() {
+  //     // @ts-ignore
+  //     this.bee.matterGameObject.thrust(0.0001);
+  //   }
 }
