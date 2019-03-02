@@ -22,6 +22,36 @@ export class Bee extends Phaser.GameObjects.Arc {
   private latestYPositions = [];
   private latestXPositions = [];
 
+  constructor(scene: Phaser.Scene, x: number, y: number) {
+    super(scene, x, y, Bee.RADIUS, 0, 360, false, Bee.COLOR);
+    this.scene = scene;
+    this.scene.add.existing(this);
+
+    this.xGoal = x;
+    this.yGoal = y;
+
+    this.latestXPositions = Array(NUMBER_OF_STORED_POSITIONS).fill(x);
+    this.latestYPositions = Array(NUMBER_OF_STORED_POSITIONS).fill(y);
+
+    this.matterGameObject = this.scene.matter.add.gameObject(this, {
+      shape: { type: 'circle', radius: Bee.RADIUS },
+    });
+
+    this.matterGameObject.setAngle(90);
+
+    this.matterGameObject.setFrictionAir(Bee.FRICTION);
+
+    this.matterGameObject.setMass(Bee.MASS);
+
+    this.scene.time.addEvent({
+      delay: 800 * Math.random(),
+      callbackScope: this,
+      callback: () => {
+        this.fly();
+      },
+    });
+  }
+
   getMass(): number {
     return this.matterGameObject.body.mass;
   }
@@ -72,36 +102,6 @@ export class Bee extends Phaser.GameObjects.Arc {
     };
 
     honeycomb.on(BuiltHoneycomb.BUILT_EVENT, goToFlower);
-  }
-
-  constructor(scene: Phaser.Scene, x: number, y: number) {
-    super(scene, x, y, Bee.RADIUS, 0, 360, false, Bee.COLOR);
-    this.scene = scene;
-    this.scene.add.existing(this);
-
-    this.xGoal = x;
-    this.yGoal = y;
-
-    this.latestXPositions = Array(NUMBER_OF_STORED_POSITIONS).fill(x);
-    this.latestYPositions = Array(NUMBER_OF_STORED_POSITIONS).fill(y);
-
-    this.matterGameObject = this.scene.matter.add.gameObject(this, {
-      shape: { type: 'circle', radius: Bee.RADIUS },
-    });
-
-    this.matterGameObject.setAngle(90);
-
-    this.matterGameObject.setFrictionAir(Bee.FRICTION);
-
-    this.matterGameObject.setMass(Bee.MASS);
-
-    this.scene.time.addEvent({
-      delay: 800 * Math.random(),
-      callbackScope: this,
-      callback: () => {
-        this.fly();
-      },
-    });
   }
 
   public preUpdate() {
