@@ -36,12 +36,8 @@ export class Main extends Phaser.Scene {
     this.initHoneycombs();
 
     this.bees.push(new Bee(this, 400, 100));
-    // this.bees.push(new Bee(this, 400, 70));
-    // this.bees.push(new Bee(this, 380, 50));
 
-    this.bees[0].moveTo(350, 300);
-    // this.bees[1].moveTo(350, 300);
-    // this.bees[2].moveTo(350, 300);
+    // this.bees[0].moveTo(350, 300);
 
     this.newLeftHoneycomb();
 
@@ -59,15 +55,9 @@ export class Main extends Phaser.Scene {
       context: this, // Context to apply to the callback function
     });
 
-    this.time.addEvent({
-      delay: 4000,
-      callbackScope: this,
-      callback: () => {
-        this.bees[0].moveToHoneycomb(current);
-        // this.bees[1].moveToHoneycomb(this.leftHoneycombExtremity);
-        // this.bees[2].moveToHoneycomb(this.leftHoneycombExtremity);
-      },
-    });
+    if (current instanceof BuiltHoneycomb) {
+      this.bees[0].buildHoneycomb(current);
+    }
   }
 
   private newLeftHoneycomb() {
@@ -108,14 +98,6 @@ export class Main extends Phaser.Scene {
       });
       return;
     }
-
-    // this.time.addEvent({
-    //   delay: 2000,
-    //   callbackScope: this,
-    //   callback: () => {
-    //     this.newLeftHoneycomb();
-    //   },
-    // });
   }
 
   private initHoneycombs() {

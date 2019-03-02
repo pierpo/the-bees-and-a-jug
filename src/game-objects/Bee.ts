@@ -1,10 +1,13 @@
 import { Honeycomb } from './Honeycomb';
+import { BuiltHoneycomb } from './BuiltHoneycomb';
 
 const NUMBER_OF_STORED_POSITIONS = 10;
 
 export class Bee extends Phaser.GameObjects.Arc {
   public matterGameObject: any;
   public scene: Phaser.Scene;
+
+  static HAS_ARRIVED_EVENT = 'has-arrived';
 
   static RADIUS = 5;
   static THRUST_POWER = 0.05;
@@ -55,6 +58,24 @@ export class Bee extends Phaser.GameObjects.Arc {
 
   public moveToHoneycomb(honeycomb: Honeycomb) {
     this.moveTo(honeycomb.x, honeycomb.y - 20);
+  }
+
+  public buildHoneycomb(honeycomb: BuiltHoneycomb) {
+    this.moveToHoneycomb(honeycomb);
+
+    const goToFlower = () => {
+      this.moveTo(400, 50);
+
+      const arrivedToFlower = () => {
+        console.log('done!');
+        this.off(Bee.HAS_ARRIVED_EVENT, arrivedToFlower);
+      };
+
+      honeycomb.off(BuiltHoneycomb.BUILT_EVENT, goToFlower);
+      this.on(Bee.HAS_ARRIVED_EVENT, arrivedToFlower);
+    };
+
+    honeycomb.on(BuiltHoneycomb.BUILT_EVENT, goToFlower);
   }
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
@@ -149,6 +170,7 @@ export class Bee extends Phaser.GameObjects.Arc {
 
   private fly() {
     this.matterGameObject.thrust(this.computeThrust());
+    this.checkHasArrived();
 
     this.scene.time.addEvent({
       delay: Bee.FLY_FREQUENCY,
@@ -157,5 +179,15 @@ export class Bee extends Phaser.GameObjects.Arc {
         this.fly();
       },
     });
+  }
+  private checkHasArrived(): void {
+    const { x, y } = this.getPositionTendency();
+
+    const isXOkay = Math.abs(x - this.xGoal) < 2 * Bee.RADIUS;
+    const isYOkay = Math.abs(y - this.yGoal) < 2 * Bee.RADIUS;
+
+    if (isXOkay && isYOkay) {
+      this.emit(Bee.HAS_ARRIVED_EVENT);
+    }
   }
 }
