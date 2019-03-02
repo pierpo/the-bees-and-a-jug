@@ -23,10 +23,13 @@ export class BuiltHoneycomb extends Honeycomb {
       shape: { type: 'circle', radius: BuiltHoneycomb.RADIUS },
       isStatic: true,
     });
+
+    this.setAlpha(0);
   }
 
   public preUpdate() {
     if (this.shouldGrow()) {
+      this.setAlpha(1);
       this.grow();
     }
   }
