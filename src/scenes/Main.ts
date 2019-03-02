@@ -9,9 +9,7 @@ export class Main extends Phaser.Scene {
   static YELLOW_COLOR = 0xffe597;
   static RED_COLOR = 0xffa2a9;
 
-  bee: Bee;
-  bee2: Bee;
-  bee3: Bee;
+  bees: Bee[] = [];
 
   protected create() {
     this.matter.world.setBounds();
@@ -47,28 +45,28 @@ export class Main extends Phaser.Scene {
     new Honeycomb(this, 250, 300);
     new Honeycomb(this, 150, 300);
 
-    this.bee = new Bee(this, 400, 100);
-    this.bee.moveTo(350, 300);
-    this.bee2 = new Bee(this, 400, 70);
-    this.bee2.moveTo(350, 300);
-    this.bee3 = new Bee(this, 380, 50);
-    this.bee3.moveTo(350, 300);
-    // new Bee(this, 420, 70);
+    this.bees.push(new Bee(this, 400, 100));
+    this.bees.push(new Bee(this, 400, 70));
+    this.bees.push(new Bee(this, 380, 50));
+
+    this.bees[0].moveTo(350, 300);
+    this.bees[1].moveTo(350, 300);
+    this.bees[2].moveTo(350, 300);
 
     this.time.addEvent({
       delay: 4000,
       callbackScope: this,
       callback: () => {
-        this.bee.moveTo(150, 100);
-        this.bee2.moveTo(150, 100);
-        this.bee3.moveTo(150, 100);
+        this.bees[0].moveTo(150, 100);
+        this.bees[1].moveTo(150, 100);
+        this.bees[2].moveTo(150, 100);
       },
     });
   }
 
   public update() {
-    this.bee.update();
-    this.bee2.update();
-    this.bee3.update();
+    this.bees.map(bee => {
+      bee.update();
+    });
   }
 }
