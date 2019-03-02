@@ -12,7 +12,8 @@
     "clean-webpack-plugin": "^0.1.19",
     "gh-pages": "^1.2.0",
     "html-webpack-plugin": "^3.2.0",
-    "phaser": "3.16.2"
+    "phaser": "3.16.2",
+    "phaser-matter-collision-plugin": "^0.10.2"
   },
   "devDependencies": {
     "@types/jest": "24.0.9",

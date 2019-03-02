@@ -1,4 +1,6 @@
 import 'phaser';
+// @ts-ignore
+import PhaserMatterCollisionPlugin from 'phaser-matter-collision-plugin';
 import { Main } from './scenes/Main';
 
 class PhaserGame extends Phaser.Game {
@@ -10,6 +12,15 @@ class PhaserGame extends Phaser.Game {
       height: 450,
       zoom: 1,
       backgroundColor: '#c3f9ff',
+      plugins: {
+        scene: [
+          {
+            mapping: 'matterCollision',
+            key: 'matterCollision',
+            plugin: PhaserMatterCollisionPlugin,
+          },
+        ],
+      },
       physics: {
         default: 'matter',
         matter: {
@@ -24,5 +35,4 @@ class PhaserGame extends Phaser.Game {
   }
 }
 
-// tslint:disable-next-line
 new PhaserGame();
