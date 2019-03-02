@@ -54,6 +54,16 @@ export class Main extends Phaser.Scene {
     this.bee3 = new Bee(this, 380, 50);
     this.bee3.moveTo(350, 300);
     // new Bee(this, 420, 70);
+
+    this.time.addEvent({
+      delay: 4000,
+      callbackScope: this,
+      callback: () => {
+        this.bee.moveTo(150, 100);
+        this.bee2.moveTo(150, 100);
+        this.bee3.moveTo(150, 100);
+      },
+    });
   }
 
   public update() {

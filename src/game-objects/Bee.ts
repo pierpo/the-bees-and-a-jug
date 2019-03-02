@@ -28,8 +28,15 @@ export class Bee extends Phaser.GameObjects.Arc {
   }
 
   public moveTo(x: number, y: number) {
-    this.xGoal = x;
-    this.yGoal = y;
+    // Move with a debounce to not have all the bees at once
+    this.scene.time.addEvent({
+      delay: 200 * Math.random(),
+      callbackScope: this,
+      callback: () => {
+        this.xGoal = x;
+        this.yGoal = y;
+      },
+    });
   }
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
@@ -56,7 +63,7 @@ export class Bee extends Phaser.GameObjects.Arc {
     this.fly();
 
     this.scene.time.addEvent({
-      delay: 200 * Math.random(),
+      delay: 400 * Math.random(),
       callbackScope: this,
       callback: () => {
         this.fly();
