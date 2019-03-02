@@ -13,19 +13,6 @@ export class Main extends Phaser.Scene {
 
   protected create() {
     this.matter.world.setBounds();
-    // this.matter.world.disableGravity();
-
-    // const arrow = '40 0 40 20 100 20 100 80 40 80 40 100 0 50';
-
-    // const poly = this.add.polygon(400, 300, arrow, yellowColor);
-
-    // this.matter.add.gameObject(poly, {
-    //   shape: { type: 'fromVerts', verts: arrow, flagInternal: true },
-    // });
-
-    // poly.setVelocity(6, 3);
-    // poly.setAngularVelocity(0.01);
-    // poly.setFriction(0.1, 0.1, 0.1);
 
     const rot = Phaser.Math.DegToRad(90);
 
@@ -80,8 +67,6 @@ export class Main extends Phaser.Scene {
       delay: 4000,
       callbackScope: this,
       callback: () => {
-        // this.bees[1].moveTo(150, 100);
-        // this.bees[2].moveTo(150, 100);
         this.bees[0].moveToHoneycomb(rightHoneycomb);
         this.bees[1].moveToHoneycomb(leftHoneycomb);
         this.bees[2].moveToHoneycomb(leftHoneycomb);
