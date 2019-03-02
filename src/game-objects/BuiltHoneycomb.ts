@@ -21,20 +21,27 @@ export class BuiltHoneycomb extends Honeycomb {
       shape: { type: 'circle', radius: BuiltHoneycomb.RADIUS },
       isStatic: true,
     });
-
-    this.grow();
   }
 
   public preUpdate() {
-    this.grow();
+    if (this.shouldGrow()) {
+      this.grow();
+    }
+  }
+
+  private shouldGrow() {
+    const maxScale = BuiltHoneycomb.MAX_RADIUS / BuiltHoneycomb.RADIUS;
+    return this.scale < maxScale;
   }
 
   public grow() {
     const step = (BuiltHoneycomb.MAX_RADIUS - BuiltHoneycomb.RADIUS) * BuiltHoneycomb.GROW_SPEED;
-    const maxScale = BuiltHoneycomb.MAX_RADIUS / BuiltHoneycomb.RADIUS;
-    if (this.scale >= maxScale) return;
     this.scale += step;
 
     this.matterGameObject.setScale(this.scale);
+
+    if (!this.shouldGrow()) {
+      this.emit('built');
+    }
   }
 }

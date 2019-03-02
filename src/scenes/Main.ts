@@ -87,8 +87,10 @@ export class Main extends Phaser.Scene {
       )
       .length();
 
-    if (newDistance < BuiltHoneycomb.MAX_RADIUS) {
-      console.log('The hive is complete!');
+    if (newDistance < 2 * BuiltHoneycomb.MAX_RADIUS) {
+      this.leftHoneycombExtremity.on('built', () => {
+        console.log('The hive is complete!');
+      });
       return;
     }
 
