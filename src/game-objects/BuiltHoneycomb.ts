@@ -7,7 +7,6 @@ export class BuiltHoneycomb extends Honeycomb {
   static BUILT_EVENT = 'built';
 
   static INITIAL_RADIUS = 2;
-  static RADIUS = 10;
   static GROW_SPEED = 0.005;
   static COLOR = 0xffe597;
 
