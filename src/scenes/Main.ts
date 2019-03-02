@@ -44,8 +44,14 @@ export class Main extends Phaser.Scene {
       this.leftHoneycombExtremity.x,
       this.leftHoneycombExtremity.y,
     );
-    const rightToLeftHoneycomb = rightHoneycombPosition.subtract(leftHoneycombPosition);
-    const directionBetweenHoneycombs = rightToLeftHoneycomb.normalize();
+    const leftToRightHoneycomb = rightHoneycombPosition.subtract(leftHoneycombPosition);
+    const directionBetweenHoneycombs = leftToRightHoneycomb.normalize();
+
+    const randomAngleAmplitude = 2;
+    const randomDeltaAngle = Math.random() * randomAngleAmplitude - randomAngleAmplitude / 2;
+
+    const newRandomAngle = leftToRightHoneycomb.angle() + randomDeltaAngle;
+    directionBetweenHoneycombs.setToPolar(newRandomAngle);
     const xDir = directionBetweenHoneycombs.x;
     const yDir = directionBetweenHoneycombs.y;
     const stepLength = 2 * BuiltHoneycomb.MAX_RADIUS;
