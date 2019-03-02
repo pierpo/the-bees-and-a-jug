@@ -7,6 +7,7 @@ import { randomRange } from '../services/random-range';
 export class Main extends Phaser.Scene {
   static RED_COLOR = 0xffc4c8;
   static SCENE_KEY = 'Main';
+  static NUMBER_OF_BEES = 10;
 
   constructor() {
     super(Main.SCENE_KEY);
@@ -24,13 +25,13 @@ export class Main extends Phaser.Scene {
 
     this.initHoneycombs();
 
-    this.bees.push(new Bee(this, 400 + randomRange(-30, 30), 100 + randomRange(-30, 30)));
-    this.bees.push(new Bee(this, 400 + randomRange(-30, 30), 100 + randomRange(-30, 30)));
-    this.bees.push(new Bee(this, 400 + randomRange(-30, 30), 100 + randomRange(-30, 30)));
-    this.bees.push(new Bee(this, 400 + randomRange(-30, 30), 100 + randomRange(-30, 30)));
-    this.bees.push(new Bee(this, 400 + randomRange(-30, 30), 100 + randomRange(-30, 30)));
-    this.bees.push(new Bee(this, 400 + randomRange(-30, 30), 100 + randomRange(-30, 30)));
-    this.bees.push(new Bee(this, 400 + randomRange(-30, 30), 100 + randomRange(-30, 30)));
+    const newRandomBee = () => {
+      return new Bee(this, 400 + randomRange(-30, 30), 100 + randomRange(-30, 30));
+    };
+
+    this.bees = Array(Main.NUMBER_OF_BEES)
+      .fill(0)
+      .map(newRandomBee);
 
     this.bees.forEach(bee => {
       this.time.addEvent({
