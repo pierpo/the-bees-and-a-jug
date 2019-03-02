@@ -36,26 +36,41 @@ export class Main extends Phaser.Scene {
     this.initHoneycombs();
 
     this.bees.push(new Bee(this, 400, 100));
-    this.bees.push(new Bee(this, 400, 70));
-    this.bees.push(new Bee(this, 380, 50));
+    // this.bees.push(new Bee(this, 400, 70));
+    // this.bees.push(new Bee(this, 380, 50));
 
     this.bees[0].moveTo(350, 300);
-    this.bees[1].moveTo(350, 300);
-    this.bees[2].moveTo(350, 300);
+    // this.bees[1].moveTo(350, 300);
+    // this.bees[2].moveTo(350, 300);
 
-    this.newRightHoneycomb();
+    this.newLeftHoneycomb();
+
+    const current = this.leftHoneycombExtremity;
+    // @ts-ignore
+    this.matterCollision.addOnCollideStart({
+      objectA: this.bees[0],
+      objectB: current,
+      callback: function(eventData) {
+        // @ts-ignore
+        const { bodyA, bodyB, gameObjectA, gameObjectB, pair } = eventData;
+
+        gameObjectB.hasBeenTouchedByBee = true;
+      },
+      context: this, // Context to apply to the callback function
+    });
+
     this.time.addEvent({
       delay: 4000,
       callbackScope: this,
       callback: () => {
-        this.bees[0].moveToHoneycomb(this.rightHoneycombExtremity);
-        this.bees[1].moveToHoneycomb(this.leftHoneycombExtremity);
-        this.bees[2].moveToHoneycomb(this.leftHoneycombExtremity);
+        this.bees[0].moveToHoneycomb(current);
+        // this.bees[1].moveToHoneycomb(this.leftHoneycombExtremity);
+        // this.bees[2].moveToHoneycomb(this.leftHoneycombExtremity);
       },
     });
   }
 
-  private newRightHoneycomb() {
+  private newLeftHoneycomb() {
     const rightHoneycombPosition = new Phaser.Math.Vector2(
       this.rightHoneycombExtremity.x,
       this.rightHoneycombExtremity.y,
@@ -94,13 +109,13 @@ export class Main extends Phaser.Scene {
       return;
     }
 
-    this.time.addEvent({
-      delay: 2000,
-      callbackScope: this,
-      callback: () => {
-        this.newRightHoneycomb();
-      },
-    });
+    // this.time.addEvent({
+    //   delay: 2000,
+    //   callbackScope: this,
+    //   callback: () => {
+    //     this.newLeftHoneycomb();
+    //   },
+    // });
   }
 
   private initHoneycombs() {

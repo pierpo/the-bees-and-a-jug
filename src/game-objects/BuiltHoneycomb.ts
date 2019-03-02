@@ -12,7 +12,7 @@ export class BuiltHoneycomb extends Honeycomb {
   static COLOR = 0xffe597;
 
   private scale = 1;
-
+  private _hasBeenTouchedByBee = false;
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, BuiltHoneycomb.RADIUS, 0, 360, false, BuiltHoneycomb.COLOR);
     this.scene = scene;
@@ -31,7 +31,9 @@ export class BuiltHoneycomb extends Honeycomb {
     }
   }
 
-  private shouldGrow() {
+  private shouldGrow(): boolean {
+    if (!this.hasBeenTouchedByBee) return false;
+
     const maxScale = BuiltHoneycomb.MAX_RADIUS / BuiltHoneycomb.RADIUS;
     return this.scale < maxScale;
   }
@@ -45,5 +47,13 @@ export class BuiltHoneycomb extends Honeycomb {
     if (!this.shouldGrow()) {
       this.emit(BuiltHoneycomb.BUILT_EVENT);
     }
+  }
+
+  public get hasBeenTouchedByBee() {
+    return this._hasBeenTouchedByBee;
+  }
+  public set hasBeenTouchedByBee(value) {
+    console.log('YES');
+    this._hasBeenTouchedByBee = value;
   }
 }
