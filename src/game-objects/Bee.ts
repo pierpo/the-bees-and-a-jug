@@ -1,4 +1,5 @@
 import { Main } from '../scenes/Main';
+import { Honeycomb } from './Honeycomb';
 
 const NUMBER_OF_STORED_POSITIONS = 10;
 
@@ -7,15 +8,16 @@ export class Bee extends Phaser.GameObjects.Arc {
   public scene: Phaser.Scene;
 
   static RADIUS = 5;
-  static THRUST_POWER = 0.02;
+  static THRUST_POWER = 0.04;
   static MASS = 0.5;
   static FRICTION = 0.15;
-  static FLY_FREQUENCY = 200;
+  static FLY_FREQUENCY = 150;
 
   private xGoal;
   private yGoal;
 
   private latestYPositions = [];
+  private latestXPositions = [];
 
   getMass(): number {
     return this.matterGameObject.body.mass;
@@ -23,6 +25,20 @@ export class Bee extends Phaser.GameObjects.Arc {
 
   getAngle(): number {
     return this.matterGameObject.angle;
+  }
+
+  getPositionTendency(): { x: number; y: number } {
+    const xPositionTendency =
+      this.latestXPositions.reduce((acc, v) => {
+        return acc + v;
+      }, 0) / this.latestXPositions.length;
+
+    const yPositionTendency =
+      this.latestYPositions.reduce((acc, v) => {
+        return acc + v;
+      }, 0) / this.latestYPositions.length;
+
+    return { x: xPositionTendency, y: yPositionTendency };
   }
 
   public moveTo(x: number, y: number) {
@@ -37,6 +53,10 @@ export class Bee extends Phaser.GameObjects.Arc {
     });
   }
 
+  public moveToHoneycomb(honeycomb: Honeycomb) {
+    this.moveTo(honeycomb.x, honeycomb.y - 20);
+  }
+
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, Bee.RADIUS, 0, 360, false, Main.YELLOW_COLOR);
     this.scene = scene;
@@ -45,6 +65,7 @@ export class Bee extends Phaser.GameObjects.Arc {
     this.xGoal = x;
     this.yGoal = y;
 
+    this.latestXPositions = Array(NUMBER_OF_STORED_POSITIONS).fill(x);
     this.latestYPositions = Array(NUMBER_OF_STORED_POSITIONS).fill(y);
 
     this.matterGameObject = this.scene.matter.add.gameObject(this, {
@@ -55,10 +76,8 @@ export class Bee extends Phaser.GameObjects.Arc {
 
     this.matterGameObject.setMass(Bee.MASS);
 
-    this.fly();
-
     this.scene.time.addEvent({
-      delay: 400 * Math.random(),
+      delay: 800 * Math.random(),
       callbackScope: this,
       callback: () => {
         this.fly();
@@ -68,6 +87,10 @@ export class Bee extends Phaser.GameObjects.Arc {
 
   public update() {
     this.adjustTrajectory();
+
+    const currentX = this.matterGameObject.body.position.x;
+    this.latestXPositions.pop();
+    this.latestXPositions.unshift(currentX);
 
     const currentY = this.matterGameObject.body.position.y;
     this.latestYPositions.pop();
@@ -98,10 +121,7 @@ export class Bee extends Phaser.GameObjects.Arc {
   public computeThrust() {
     const WEIGHT = 0.05;
 
-    const yPositionTendency =
-      this.latestYPositions.reduce((acc, v) => {
-        return acc + v;
-      }, 0) / this.latestYPositions.length;
+    const yPositionTendency = this.getPositionTendency().y;
 
     const yDiffToGoal = this.yGoal - yPositionTendency;
 

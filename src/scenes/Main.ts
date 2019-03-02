@@ -42,8 +42,8 @@ export class Main extends Phaser.Scene {
     // @ts-ignore
     react3go.setRotation(rot);
 
-    new Honeycomb(this, 250, 300);
-    new Honeycomb(this, 150, 300);
+    const honeycomb1 = new Honeycomb(this, 250, 300);
+    const honeycomb2 = new Honeycomb(this, 150, 300);
 
     this.bees.push(new Bee(this, 400, 100));
     this.bees.push(new Bee(this, 400, 70));
@@ -57,9 +57,11 @@ export class Main extends Phaser.Scene {
       delay: 4000,
       callbackScope: this,
       callback: () => {
-        this.bees[0].moveTo(150, 100);
-        this.bees[1].moveTo(150, 100);
-        this.bees[2].moveTo(150, 100);
+        // this.bees[1].moveTo(150, 100);
+        // this.bees[2].moveTo(150, 100);
+        this.bees[0].moveToHoneycomb(honeycomb1);
+        this.bees[1].moveToHoneycomb(honeycomb2);
+        this.bees[2].moveToHoneycomb(honeycomb2);
       },
     });
   }
