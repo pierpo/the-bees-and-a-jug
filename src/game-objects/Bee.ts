@@ -9,6 +9,8 @@ export class Bee extends Phaser.GameObjects.Arc {
   static RADIUS = 5;
   static THRUST_POWER = 0.02;
   static MASS = 0.5;
+  static FRICTION = 0.15;
+  static FLY_FREQUENCY = 200;
 
   private xGoal;
   private yGoal;
@@ -46,7 +48,7 @@ export class Bee extends Phaser.GameObjects.Arc {
     });
 
     // @ts-ignore
-    this.matterGameObject.setFrictionAir(0.15);
+    this.matterGameObject.setFrictionAir(Bee.FRICTION);
 
     // @ts-ignore
     this.matterGameObject.setMass(Bee.MASS);
@@ -54,7 +56,7 @@ export class Bee extends Phaser.GameObjects.Arc {
     this.fly();
 
     this.scene.time.addEvent({
-      delay: 1000 * Math.random(),
+      delay: 200 * Math.random(),
       callbackScope: this,
       callback: () => {
         this.fly();
@@ -94,7 +96,7 @@ export class Bee extends Phaser.GameObjects.Arc {
   }
 
   public computeThrust() {
-    const WEIGHT = 0.1;
+    const WEIGHT = 0.05;
 
     const yPositionTendency =
       this.latestYPositions.reduce((acc, v) => {
@@ -127,7 +129,7 @@ export class Bee extends Phaser.GameObjects.Arc {
     this.matterGameObject.thrust(this.computeThrust());
 
     this.scene.time.addEvent({
-      delay: 200,
+      delay: Bee.FLY_FREQUENCY,
       callbackScope: this,
       callback: () => {
         this.fly();
