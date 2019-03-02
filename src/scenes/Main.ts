@@ -80,7 +80,7 @@ export class Main extends Phaser.Scene {
     directionBetweenHoneycombs.setToPolar(newRandomAngle);
     const xDir = directionBetweenHoneycombs.x;
     const yDir = directionBetweenHoneycombs.y;
-    const stepLength = 2 * BuiltHoneycomb.MAX_RADIUS;
+    const stepLength = 2 * BuiltHoneycomb.RADIUS;
     const newHoneycombPosition = directionBetweenHoneycombs.add(
       new Phaser.Math.Vector2(stepLength * xDir, stepLength * yDir),
     );
@@ -131,7 +131,7 @@ export class Main extends Phaser.Scene {
       )
       .length();
 
-    return newDistance < 2 * BuiltHoneycomb.MAX_RADIUS;
+    return newDistance < 2 * BuiltHoneycomb.RADIUS;
   }
 
   public shouldBuildNewHoneycombs(): boolean {
@@ -148,7 +148,7 @@ export class Main extends Phaser.Scene {
       )
       .length();
 
-    const isFarEnough = newDistance >= 2 * BuiltHoneycomb.MAX_RADIUS;
+    const isFarEnough = newDistance >= 2 * BuiltHoneycomb.RADIUS;
     const isCurrentHoneycombComplete = this.leftHoneycombExtremity.isComplete;
 
     return isFarEnough && isCurrentHoneycombComplete;

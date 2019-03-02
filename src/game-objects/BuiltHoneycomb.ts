@@ -6,8 +6,8 @@ export class BuiltHoneycomb extends Honeycomb {
 
   static BUILT_EVENT = 'built';
 
-  static RADIUS = 2;
-  static MAX_RADIUS = 10;
+  static INITIAL_RADIUS = 2;
+  static RADIUS = 10;
   static GROW_SPEED = 0.005;
   static COLOR = 0xffe597;
 
@@ -16,13 +16,13 @@ export class BuiltHoneycomb extends Honeycomb {
   private _isComplete = false;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
-    super(scene, x, y, BuiltHoneycomb.RADIUS, 0, 360, false, BuiltHoneycomb.COLOR);
+    super(scene, x, y, BuiltHoneycomb.INITIAL_RADIUS, 0, 360, false, BuiltHoneycomb.COLOR);
     this.scene = scene;
 
     scene.add.existing(this);
 
     this.matterGameObject = this.scene.matter.add.gameObject(this, {
-      shape: { type: 'circle', radius: BuiltHoneycomb.RADIUS },
+      shape: { type: 'circle', radius: BuiltHoneycomb.INITIAL_RADIUS },
       isStatic: true,
     });
 
@@ -39,12 +39,13 @@ export class BuiltHoneycomb extends Honeycomb {
   private shouldGrow(): boolean {
     if (!this.hasBeenTouchedByBee) return false;
 
-    const maxScale = BuiltHoneycomb.MAX_RADIUS / BuiltHoneycomb.RADIUS;
+    const maxScale = BuiltHoneycomb.RADIUS / BuiltHoneycomb.INITIAL_RADIUS;
     return this.scale < maxScale;
   }
 
   public grow() {
-    const step = (BuiltHoneycomb.MAX_RADIUS - BuiltHoneycomb.RADIUS) * BuiltHoneycomb.GROW_SPEED;
+    const step =
+      (BuiltHoneycomb.RADIUS - BuiltHoneycomb.INITIAL_RADIUS) * BuiltHoneycomb.GROW_SPEED;
     this.scale += step;
 
     this.matterGameObject.setScale(this.scale);
