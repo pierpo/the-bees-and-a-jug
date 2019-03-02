@@ -63,6 +63,26 @@ export class Main extends Phaser.Scene {
       this.leftHoneycombExtremity.y + newHoneycombPosition.y,
     );
 
+    const unsubscribeList = { list: [] };
+    const unsubscribeAll = () => {
+      unsubscribeList.list.forEach(unsubscribe => unsubscribe());
+    };
+
+    unsubscribeList.list = this.bees.map(bee => {
+      // @ts-ignore
+      return this.matterCollision.addOnCollideStart({
+        objectA: bee,
+        objectB: this.leftHoneycombExtremity,
+        callback: eventData => {
+          // @ts-ignore
+          const { gameObjectB } = eventData;
+
+          gameObjectB.hasBeenTouchedByBee = true;
+          unsubscribeAll();
+        },
+      });
+    });
+
     if (!this.shouldBuildNewHoneycombs()) {
       this.leftHoneycombExtremity.on(BuiltHoneycomb.BUILT_EVENT, () => {
         console.log('The hive is complete!');

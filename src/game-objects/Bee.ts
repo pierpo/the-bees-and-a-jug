@@ -96,19 +96,6 @@ export class Bee extends Phaser.GameObjects.Arc {
   public buildHoneycomb() {
     this.scene.newLeftHoneycomb();
     const honeycomb = this.scene.leftHoneycombExtremity;
-    // @ts-ignore
-    this.scene.matterCollision.addOnCollideStart({
-      // TODO for all bees and cleanup afterwards
-      objectA: this,
-      objectB: honeycomb,
-      callback: function(eventData) {
-        // @ts-ignore
-        const { bodyA, bodyB, gameObjectA, gameObjectB, pair } = eventData;
-
-        gameObjectB.hasBeenTouchedByBee = true;
-      },
-      context: this, // Context to apply to the callback function
-    });
 
     if (honeycomb instanceof BuiltHoneycomb) {
       this.moveToHoneycomb(honeycomb).then();
