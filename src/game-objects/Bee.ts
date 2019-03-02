@@ -146,6 +146,7 @@ export class Bee extends Phaser.GameObjects.Arc {
   private computeThrust() {
     const WEIGHT = 0.08;
     const DOWN_DIRECTION_WEIGHT = 0.2;
+    const UPWARDS_BOOST = 1.3;
 
     const yPositionTendency = this.getPositionTendency().y;
 
@@ -156,6 +157,11 @@ export class Bee extends Phaser.GameObjects.Arc {
     let finalAdjustment = adjustment;
     if (adjustment < 0) {
       finalAdjustment = -adjustment * DOWN_DIRECTION_WEIGHT;
+    }
+
+    const velocityY = this.matterGameObject.body.velocity.y;
+    if (velocityY > 1) {
+      finalAdjustment *= UPWARDS_BOOST;
     }
 
     return -finalAdjustment * Bee.THRUST_POWER * this.getMass();
