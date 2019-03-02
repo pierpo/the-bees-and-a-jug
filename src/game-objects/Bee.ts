@@ -12,10 +12,10 @@ export class Bee extends Phaser.GameObjects.Arc {
 
   static RADIUS = 5;
   static THRUST_POWER = 0.05;
-  static MASS = 0.4;
+  static MASS = 0.6;
   static FRICTION = 0.15;
   static FLY_FREQUENCY = 250;
-  static COLOR = 0xffe597;
+  static COLOR = 0xf9de8f;
 
   private xGoal;
   private yGoal;

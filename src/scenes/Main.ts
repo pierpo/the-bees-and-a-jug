@@ -22,13 +22,23 @@ export class Main extends Phaser.Scene {
 
     this.initHoneycombs();
 
-    this.bees.push(new Bee(this, 400, 100));
-    this.bees.push(new Bee(this, 400, 100));
-    this.bees.push(new Bee(this, 400, 100));
+    this.bees.push(new Bee(this, 400 + randomRange(-30, 30), 100 + randomRange(-30, 30)));
+    this.bees.push(new Bee(this, 400 + randomRange(-30, 30), 100 + randomRange(-30, 30)));
+    this.bees.push(new Bee(this, 400 + randomRange(-30, 30), 100 + randomRange(-30, 30)));
+    this.bees.push(new Bee(this, 400 + randomRange(-30, 30), 100 + randomRange(-30, 30)));
+    this.bees.push(new Bee(this, 400 + randomRange(-30, 30), 100 + randomRange(-30, 30)));
+    this.bees.push(new Bee(this, 400 + randomRange(-30, 30), 100 + randomRange(-30, 30)));
+    this.bees.push(new Bee(this, 400 + randomRange(-30, 30), 100 + randomRange(-30, 30)));
 
-    this.bees[0].buildHoneycomb();
-    this.bees[1].buildHoneycomb();
-    this.bees[2].buildHoneycomb();
+    this.bees.forEach(bee => {
+      this.time.addEvent({
+        delay: 3000 * Math.random(),
+        callbackScope: this,
+        callback: () => {
+          bee.buildHoneycomb();
+        },
+      });
+    });
   }
 
   public tryNewLeftHoneycomb(): BuiltHoneycomb {
