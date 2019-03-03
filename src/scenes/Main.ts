@@ -138,7 +138,11 @@ export class Main extends Phaser.Scene {
     this.checkFullscreen();
     this.matter.world.setBounds();
 
-    this.flowers = [new Flower(this, 400, 313)];
+    this.flowers = [
+      new Flower(this, 400, 313),
+      new Flower(this, 490, 350, 0.2),
+      new Flower(this, 520, 330, 0.25),
+    ];
     new Jug(this);
 
     // Sun
@@ -151,7 +155,7 @@ export class Main extends Phaser.Scene {
     // Ground
     this.add.rectangle(300, 453, 1200, 130, 0x89d18c);
 
-    const newRandomBee = (_, index) => {
+    const newRandomBee = (_: any, index: number) => {
       const isAWanderer = index % 6 === 0;
       return new Bee(this, 400 + randomRange(-100, 100), 100 + randomRange(-80, 130), isAWanderer);
     };

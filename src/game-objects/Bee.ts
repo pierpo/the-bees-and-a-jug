@@ -104,10 +104,10 @@ export class Bee extends Phaser.GameObjects.Sprite {
   }
 
   public moveApproximatelyToRandomFlower(): Promise<void> {
-    const randomFlower = this.scene.flowers[0];
+    const randomFlower = this.scene.flowers[randomIntRange(0, this.scene.flowers.length - 1)];
     return this.moveTo(
-      randomFlower.flowerCorePosition.x + randomRange(-40, 40),
-      randomFlower.flowerCorePosition.y + randomRange(-40, 40),
+      randomFlower.flowerCorePosition.x + randomRange(-20, 20),
+      randomFlower.flowerCorePosition.y + randomRange(-20, 20),
     );
   }
 
