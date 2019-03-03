@@ -21,6 +21,7 @@
     "babel-core": "^6.26.3",
     "babel-jest": "^23.2.0",
     "copy-webpack-plugin": "4.5.1",
+    "favicons-webpack-plugin": "0.0.9",
     "husky": "1.1.2",
     "jest": "24.1.0",
     "source-map-loader": "^0.2.3",
