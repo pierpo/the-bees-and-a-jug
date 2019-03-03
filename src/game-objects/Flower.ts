@@ -10,10 +10,11 @@ export class Flower extends Phaser.GameObjects.Sprite {
     return { x: this.x, y: flowerCoreY };
   }
 
-  constructor(scene: Main, x: number, y: number, scale: number = 0.3) {
-    super(scene, x, y, 'flower');
+  constructor(scene: Main, x: number, floorY: number, scale: number = 0.3) {
+    super(scene, x, floorY, 'flower');
     this.scene = scene;
     this.scale = scale;
+    this.y = floorY - (this.height * this.scale) / 2;
 
     this.setScale(scale);
 

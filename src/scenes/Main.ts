@@ -139,9 +139,9 @@ export class Main extends Phaser.Scene {
     this.matter.world.setBounds();
 
     this.flowers = [
-      new Flower(this, 400, 313),
-      new Flower(this, 490, 350, 0.2),
-      new Flower(this, 520, 330, 0.25),
+      new Flower(this, 400, 388),
+      new Flower(this, 490, 388, 0.2),
+      new Flower(this, 520, 388, 0.25),
     ];
     new Jug(this);
 
