@@ -7,19 +7,6 @@ import { Flower } from '../game-objects/Flower';
 import { Cloud } from '../game-objects/Cloud';
 
 export class Main extends Phaser.Scene {
-  static RED_COLOR = 0xffc4c8;
-  static SCENE_KEY = 'Main';
-  static NUMBER_OF_BEES = 10;
-  static RANDOM_BUILD_ANGLE_AMPLITUDE = 1.5;
-
-  constructor() {
-    super(Main.SCENE_KEY);
-  }
-
-  private bees: Bee[] = [];
-
-  private _leftHoneycombExtremity: Honeycomb;
-  private _rightHoneycombExtremity: Honeycomb;
 
   public get leftHoneycombExtremity(): Honeycomb {
     return this._leftHoneycombExtremity;
@@ -35,40 +22,18 @@ export class Main extends Phaser.Scene {
   public set rightHoneycombExtremity(value: Honeycomb) {
     this._rightHoneycombExtremity = value;
   }
+  public static RED_COLOR = 0xffc4c8;
+  public static SCENE_KEY = 'Main';
+  public static NUMBER_OF_BEES = 10;
+  public static RANDOM_BUILD_ANGLE_AMPLITUDE = 1.5;
 
-  protected create() {
-    this.matter.world.setBounds();
+  private bees: Bee[] = [];
 
-    new Flower(this, 400, 313);
-    new Jug(this);
+  private _leftHoneycombExtremity: Honeycomb;
+  private _rightHoneycombExtremity: Honeycomb;
 
-    // Sun
-    this.add.circle(70, 50, 50, 0xffff78);
-
-    new Cloud(this, 0, 0);
-    new Cloud(this, 200, 20);
-    new Cloud(this, 400, 10);
-
-    // Ground
-    this.add.rectangle(300, 453, 1200, 130, 0x89d18c);
-
-    const newRandomBee = () => {
-      return new Bee(this, 400 + randomRange(-30, 30), 100 + randomRange(-30, 30));
-    };
-
-    this.bees = Array(Main.NUMBER_OF_BEES)
-      .fill(0)
-      .map(newRandomBee);
-
-    this.bees.forEach(bee => {
-      this.time.addEvent({
-        delay: 8000 * Math.random(),
-        callbackScope: this,
-        callback: () => {
-          bee.buildHoneycomb();
-        },
-      });
-    });
+  constructor() {
+    super(Main.SCENE_KEY);
   }
 
   public tryNewLeftHoneycomb(): BuiltHoneycomb {
@@ -168,5 +133,40 @@ export class Main extends Phaser.Scene {
     const isCurrentHoneycombComplete = this.leftHoneycombExtremity.isComplete;
 
     return isFarEnough && isCurrentHoneycombComplete;
+  }
+
+  protected create() {
+    this.matter.world.setBounds();
+
+    new Flower(this, 400, 313);
+    new Jug(this);
+
+    // Sun
+    this.add.circle(70, 50, 50, 0xffff78);
+
+    new Cloud(this, 0, 0);
+    new Cloud(this, 200, 20);
+    new Cloud(this, 400, 10);
+
+    // Ground
+    this.add.rectangle(300, 453, 1200, 130, 0x89d18c);
+
+    const newRandomBee = () => {
+      return new Bee(this, 400 + randomRange(-30, 30), 100 + randomRange(-30, 30));
+    };
+
+    this.bees = Array(Main.NUMBER_OF_BEES)
+      .fill(0)
+      .map(newRandomBee);
+
+    this.bees.forEach(bee => {
+      this.time.addEvent({
+        delay: 8000 * Math.random(),
+        callbackScope: this,
+        callback: () => {
+          bee.buildHoneycomb();
+        },
+      });
+    });
   }
 }

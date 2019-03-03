@@ -1,3 +1,3 @@
 export abstract class Honeycomb extends Phaser.GameObjects.Arc {
-  static RADIUS = 5;
+  public static RADIUS = 5;
 }

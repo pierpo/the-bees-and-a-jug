@@ -6,22 +6,22 @@ import { randomRange } from '../services/random-range';
 const NUMBER_OF_STORED_POSITIONS = 10;
 
 export class Bee extends Phaser.GameObjects.Sprite {
+
+  public static HAS_ARRIVED_EVENT = 'has-arrived';
+
+  public static SPRITE_SCALE = 0.25;
+
+  public static RADIUS = 7;
+  public static THRUST_POWER = 0.05;
+  public static MASS = 0.6;
+  public static FRICTION = 0.15;
+  public static FLY_FREQUENCY = 250;
+  public static COLOR = 0xf9de8f;
+
+  public static WAYPOINT_1 = { x: 500, y: 50 };
+  public static WAYPOINT_2 = { x: 400, y: 300 };
   public matterGameObject: any;
   public scene: Main;
-
-  static HAS_ARRIVED_EVENT = 'has-arrived';
-
-  static SPRITE_SCALE = 0.25;
-
-  static RADIUS = 7;
-  static THRUST_POWER = 0.05;
-  static MASS = 0.6;
-  static FRICTION = 0.15;
-  static FLY_FREQUENCY = 250;
-  static COLOR = 0xf9de8f;
-
-  static WAYPOINT_1 = { x: 500, y: 50 };
-  static WAYPOINT_2 = { x: 400, y: 300 };
 
   private xGoal;
   private yGoal;
@@ -60,15 +60,15 @@ export class Bee extends Phaser.GameObjects.Sprite {
     });
   }
 
-  getMass(): number {
+  public getMass(): number {
     return this.matterGameObject.body.mass;
   }
 
-  getAngle(): number {
+  public getAngle(): number {
     return this.matterGameObject.angle;
   }
 
-  getPositionTendency(): { x: number; y: number } {
+  public getPositionTendency(): { x: number; y: number } {
     const xPositionTendency =
       this.latestXPositions.reduce((acc, v) => {
         return acc + v;
@@ -114,7 +114,7 @@ export class Bee extends Phaser.GameObjects.Sprite {
           Bee.WAYPOINT_2.x + randomRange(-40, 40),
           Bee.WAYPOINT_2.y + randomRange(-40, 40),
         ).then(() => {
-          if (this.scene.isHiveComplete()) return;
+          if (this.scene.isHiveComplete()) { return; }
           this.buildHoneycomb();
         });
       });

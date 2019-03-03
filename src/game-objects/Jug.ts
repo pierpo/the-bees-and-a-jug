@@ -2,10 +2,10 @@ import { Main } from '../scenes/Main';
 import { InitialHoneycomb } from './InitialHoneycomb';
 
 export class Jug {
-  private scene: Main;
 
-  static RADIUS = 5;
-  static NUMBER_OF_CIRCLES = 150;
+  public static RADIUS = 5;
+  public static NUMBER_OF_CIRCLES = 150;
+  private scene: Main;
 
   constructor(scene: Main) {
     this.scene = scene;
@@ -117,7 +117,7 @@ export class Jug {
           };
         }
 
-        if (hasPassedLowCutoffStep && hasntPassedHighCutoffStep) return;
+        if (hasPassedLowCutoffStep && hasntPassedHighCutoffStep) { return; }
         const newCircle = this.scene.add.circle(
           currentPointInPath.x + offset.x,
           currentPointInPath.y + offset.y,
