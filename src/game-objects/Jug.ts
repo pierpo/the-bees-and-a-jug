@@ -8,7 +8,15 @@ export class Jug {
     this.scene = scene;
 
     this.initHoneycombs();
+    this.initJug();
+  }
 
+  private initHoneycombs() {
+    this.scene.rightHoneycombExtremity = new InitialHoneycomb(this.scene, 250, 300);
+    this.scene.leftHoneycombExtremity = new InitialHoneycomb(this.scene, 150, 250);
+  }
+
+  private initJug() {
     const path = new Phaser.Curves.Path(143.63632022470475, 197.96526097467898);
     path.splineTo([
       new Phaser.Math.Vector2(143.63632022470475, 197.96526097467898),
@@ -46,15 +54,6 @@ export class Jug {
       new Phaser.Math.Vector2(140.98954553149417, 199.06503322509764),
     ]);
 
-    const len = 150;
-    Array(len)
-      .fill(0)
-      .forEach((_, index) => {
-        const a = path.getPoint(index / len);
-        const c = this.scene.add.circle(a.x, a.y, 5, Main.RED_COLOR);
-        this.scene.matter.add.gameObject(c, { isStatic: true });
-      });
-
     const hance = new Phaser.Curves.Path(55.18231326072216, 56.60452209766673);
     hance.splineTo([
       new Phaser.Math.Vector2(55.18231326072216, 56.60452209766673),
@@ -70,17 +69,28 @@ export class Jug {
       new Phaser.Math.Vector2(43.999634009795166, 84.18748706499139),
       new Phaser.Math.Vector2(51.320084666501806, 65.57874234929355),
     ]);
-    Array(len)
-      .fill(0)
-      .forEach((_, index) => {
-        const a = hance.getPoint(index / len);
-        const c = this.scene.add.circle(a.x, a.y, 5, Main.RED_COLOR);
-        this.scene.matter.add.gameObject(c, { isStatic: true });
-      });
-  }
 
-  private initHoneycombs() {
-    this.scene.rightHoneycombExtremity = new InitialHoneycomb(this.scene, 250, 300);
-    this.scene.leftHoneycombExtremity = new InitialHoneycomb(this.scene, 150, 250);
+    const position = { x: 100, y: 150 };
+
+    const len = 150;
+
+    // @ts-ignore
+    const hanceMatter = Array(len)
+      .fill(0)
+      .map((_, index) => {
+        const a = hance.getPoint(index / len);
+        const c = this.scene.add.circle(a.x + position.x, a.y + position.y, 5, Main.RED_COLOR);
+        return this.scene.matter.add.gameObject(c, { isStatic: true });
+      });
+
+    // @ts-ignore
+    const pathMatter = Array(len)
+      .fill(0)
+      .map((_, index) => {
+        if (index > len / 7 && index < (2 * len) / 7) return;
+        const a = path.getPoint(index / len);
+        const c = this.scene.add.circle(a.x + position.x, a.y + position.y, 5, Main.RED_COLOR);
+        return this.scene.matter.add.gameObject(c, { isStatic: true });
+      });
   }
 }
