@@ -18,7 +18,7 @@ export class Bee extends Phaser.GameObjects.Sprite {
   static FLY_FREQUENCY = 250;
   static COLOR = 0xf9de8f;
 
-  static WAYPOINT_1 = { x: 200, y: 50 };
+  static WAYPOINT_1 = { x: 500, y: 50 };
   static WAYPOINT_2 = { x: 400, y: 300 };
 
   private xGoal;

@@ -34,6 +34,8 @@ export class Main extends Phaser.Scene {
   }
 
   protected create() {
+    const flower = this.add.sprite(400, 300, 'flower');
+    flower.setScale(0.3);
     this.matter.world.setBounds();
 
     new Jug(this);
