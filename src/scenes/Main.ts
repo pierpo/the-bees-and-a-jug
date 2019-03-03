@@ -1,7 +1,7 @@
 import { Bee } from '../game-objects/Bee';
 import { BuiltHoneycomb } from '../game-objects/BuiltHoneycomb';
 import { Honeycomb } from '../game-objects/Honeycomb';
-import { randomRange } from '../services/random-range';
+import { randomRange, randomIntRange } from '../services/random-range';
 import { Jug } from '../game-objects/Jug';
 import { Flower } from '../game-objects/Flower';
 import { Cloud } from '../game-objects/Cloud';
@@ -146,7 +146,7 @@ export class Main extends Phaser.Scene {
     new Jug(this);
 
     // Sun
-    this.add.circle(70, 50, 50, 0xffff78);
+    this.add.circle(70 + randomIntRange(-30, 400), 50, 50, 0xffff78);
 
     new Cloud(this, 0, 0);
     new Cloud(this, 200, 20);
