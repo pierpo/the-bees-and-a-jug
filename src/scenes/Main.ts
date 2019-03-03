@@ -134,6 +134,7 @@ export class Main extends Phaser.Scene {
   }
 
   protected create() {
+    this.checkFullscreen();
     this.matter.world.setBounds();
 
     new Flower(this, 400, 313);
@@ -165,6 +166,17 @@ export class Main extends Phaser.Scene {
           bee.buildHoneycomb();
         },
       });
+    });
+  }
+
+  private checkFullscreen() {
+    const keyObj = this.input.keyboard.addKey('F');
+    keyObj.on('down', () => {
+      if (this.scale.isFullscreen) {
+        this.scale.stopFullscreen();
+      } else {
+        this.scale.startFullscreen();
+      }
     });
   }
 }

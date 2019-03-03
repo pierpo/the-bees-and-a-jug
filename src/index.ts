@@ -13,6 +13,10 @@ class PhaserGame extends Phaser.Game {
       height: 450,
       zoom: 1,
       backgroundColor: '#dbfcff',
+      scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+      },
       plugins: {
         scene: [
           {
