@@ -3,6 +3,7 @@ import { BuiltHoneycomb } from '../game-objects/BuiltHoneycomb';
 import { Honeycomb } from '../game-objects/Honeycomb';
 import { randomRange } from '../services/random-range';
 import { Jug } from '../game-objects/Jug';
+import { Flower } from '../game-objects/Flower';
 
 export class Main extends Phaser.Scene {
   static RED_COLOR = 0xffc4c8;
@@ -35,10 +36,9 @@ export class Main extends Phaser.Scene {
   }
 
   protected create() {
-    const flower = this.add.sprite(400, 300, 'flower');
-    flower.setScale(0.3);
     this.matter.world.setBounds();
 
+    new Flower(this, 400, 300);
     new Jug(this);
 
     const newRandomBee = () => {
