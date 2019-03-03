@@ -17,7 +17,7 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
-      title: 'Phaser3 Simple RPG',
+      title: 'The Bees and the Jug',
       template: './src/index.html',
     }),
     new CopyWebpackPlugin([{ from: 'assets', to: 'assets' }]),
