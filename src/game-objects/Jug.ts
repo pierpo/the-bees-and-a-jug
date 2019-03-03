@@ -7,13 +7,13 @@ export class Jug {
   constructor(scene: Main) {
     this.scene = scene;
 
-    this.initHoneycombs();
-    this.initJug();
+    const { firstCutoff, lastCutoff } = this.initJug();
+    this.initHoneycombs(firstCutoff, lastCutoff);
   }
 
-  private initHoneycombs() {
-    this.scene.rightHoneycombExtremity = new InitialHoneycomb(this.scene, 250, 300);
-    this.scene.leftHoneycombExtremity = new InitialHoneycomb(this.scene, 150, 250);
+  private initHoneycombs(pos1, pos2) {
+    this.scene.rightHoneycombExtremity = new InitialHoneycomb(this.scene, pos1.x, pos1.y);
+    this.scene.leftHoneycombExtremity = new InitialHoneycomb(this.scene, pos2.x, pos2.y);
   }
 
   private initJug() {
@@ -83,14 +83,30 @@ export class Jug {
         return this.scene.matter.add.gameObject(c, { isStatic: true });
       });
 
+    let firstCutoff = null;
+    let lastCutoff = null;
     // @ts-ignore
     const pathMatter = Array(len)
       .fill(0)
       .map((_, index) => {
-        if (index > len / 7 && index < (2 * len) / 7) return;
         const a = path.getPoint(index / len);
+        const inf = index > len / 7;
+        if (inf) {
+          firstCutoff = firstCutoff || { x: a.x + position.x, y: a.y + position.y };
+        }
+        const sup = index < (2 * len) / 7;
+        if (!sup) {
+          lastCutoff = lastCutoff || { x: a.x + position.x, y: a.y + position.y };
+        }
+
+        if (inf && sup) return;
         const c = this.scene.add.circle(a.x + position.x, a.y + position.y, 5, Main.RED_COLOR);
         return this.scene.matter.add.gameObject(c, { isStatic: true });
       });
+
+    return {
+      firstCutoff,
+      lastCutoff,
+    };
   }
 }
