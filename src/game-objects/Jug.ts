@@ -1,25 +1,36 @@
 import { Main } from '../scenes/Main';
 import { InitialHoneycomb } from './InitialHoneycomb';
+import { randomIntRange } from '../services/random-range';
 
 export class Jug {
   public static COLOR = 0xffc4c8;
   public static RADIUS = 5;
   public static NUMBER_OF_CIRCLES = 150;
   private scene: Main;
+  private lowCutoffThreshold: number;
+  private highCutoffThreshold: number;
 
   constructor(scene: Main) {
     this.scene = scene;
+
+    this.setRandomCutoff();
 
     const { firstCutoff, lastCutoff } = this.initJug();
     this.initHoneycombs(firstCutoff, lastCutoff);
   }
 
+  private setRandomCutoff(): void {
+    const a = Jug.NUMBER_OF_CIRCLES / 7;
+    this.lowCutoffThreshold = randomIntRange(0 * a, 0.2 * a);
+    this.highCutoffThreshold = randomIntRange(1.7 * a, 2 * a);
+  }
+
   private hasPassedLowCutoff(step: number): boolean {
-    return step > 0;
+    return step > this.lowCutoffThreshold;
   }
 
   private hasntPassedHighCutoff(step: number): boolean {
-    return step < (2 * Jug.NUMBER_OF_CIRCLES) / 7;
+    return step < this.highCutoffThreshold;
   }
 
   private initHoneycombs(pos1, pos2) {
