@@ -25,9 +25,9 @@ class PhaserGame extends Phaser.Game {
       physics: {
         default: 'matter',
         matter: {
-          // debug: true,
-          // debugShowInternalEdges: true,
-          // debugShowConvexHulls: true,
+          debug: false,
+          debugShowInternalEdges: false,
+          debugShowConvexHulls: false,
         },
       },
       scene: [Preloader, Main],
