@@ -1,7 +1,7 @@
 import { Honeycomb } from './Honeycomb';
 import { BuiltHoneycomb } from './BuiltHoneycomb';
 import { Main } from '../scenes/Main';
-import { randomRange } from '../services/random-range';
+import { randomRange, randomIntRange } from '../services/random-range';
 
 const NUMBER_OF_STORED_POSITIONS = 10;
 
@@ -28,11 +28,15 @@ export class Bee extends Phaser.GameObjects.Sprite {
   private latestYPositions = [];
   private latestXPositions = [];
 
-  constructor(scene: Main, x: number, y: number) {
+  private isAWanderer: boolean;
+
+  constructor(scene: Main, x: number, y: number, isAWanderer?: boolean) {
     super(scene, x, y, 'bee');
     this.scene = scene;
     this.setScale(Bee.SPRITE_SCALE);
     this.scene.add.existing(this);
+
+    this.isAWanderer = isAWanderer;
 
     this.xGoal = x;
     this.yGoal = y;
@@ -100,6 +104,11 @@ export class Bee extends Phaser.GameObjects.Sprite {
   }
 
   public buildHoneycomb() {
+    if (this.isAWanderer) {
+      this.wanderAround();
+      return;
+    }
+
     const honeycomb = this.scene.tryNewLeftHoneycomb();
 
     this.moveToHoneycomb(honeycomb).then();
@@ -122,6 +131,25 @@ export class Bee extends Phaser.GameObjects.Sprite {
     };
 
     honeycomb.on(BuiltHoneycomb.BUILT_EVENT, goToFlower);
+  }
+
+  wanderAround(): void {
+    this.moveTo(300 + randomIntRange(-50, 50), 100 + randomIntRange(-30, 30))
+      .then(() => {
+        return this.moveTo(350 + randomIntRange(-30, 30), 200 + randomIntRange(-30, 30));
+      })
+      .then(() => {
+        return this.moveTo(250, 70);
+      })
+      .then(() => {
+        return this.moveTo(50, 20);
+      })
+      .then(() => {
+        return this.moveTo(500, 200 + randomIntRange(-100, 50));
+      })
+      .then(() => {
+        this.wanderAround();
+      });
   }
 
   public preUpdate() {

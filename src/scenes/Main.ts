@@ -150,8 +150,9 @@ export class Main extends Phaser.Scene {
     // Ground
     this.add.rectangle(300, 453, 1200, 130, 0x89d18c);
 
-    const newRandomBee = () => {
-      return new Bee(this, 400 + randomRange(-100, 100), 100 + randomRange(-80, 130));
+    const newRandomBee = (_, index) => {
+      const isAWanderer = index % 6 === 0;
+      return new Bee(this, 400 + randomRange(-100, 100), 100 + randomRange(-80, 130), isAWanderer);
     };
 
     this.bees = Array(Main.NUMBER_OF_BEES)
