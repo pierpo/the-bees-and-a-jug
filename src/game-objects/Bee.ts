@@ -6,7 +6,6 @@ import { randomRange } from '../services/random-range';
 const NUMBER_OF_STORED_POSITIONS = 10;
 
 export class Bee extends Phaser.GameObjects.Sprite {
-
   public static HAS_ARRIVED_EVENT = 'has-arrived';
 
   public static SPRITE_SCALE = 0.25;
@@ -107,14 +106,16 @@ export class Bee extends Phaser.GameObjects.Sprite {
 
     const goToFlower = () => {
       this.moveTo(
-        Bee.WAYPOINT_1.x + randomRange(-40, 40),
-        Bee.WAYPOINT_1.y + randomRange(-40, 40),
+        Bee.WAYPOINT_1.x + randomRange(-80, 80),
+        Bee.WAYPOINT_1.y + randomRange(-20, 80),
       ).then(() => {
         return this.moveTo(
           Bee.WAYPOINT_2.x + randomRange(-40, 40),
           Bee.WAYPOINT_2.y + randomRange(-40, 40),
         ).then(() => {
-          if (this.scene.isHiveComplete()) { return; }
+          if (this.scene.isHiveComplete()) {
+            return;
+          }
           this.buildHoneycomb();
         });
       });

@@ -7,7 +7,6 @@ import { Flower } from '../game-objects/Flower';
 import { Cloud } from '../game-objects/Cloud';
 
 export class Main extends Phaser.Scene {
-
   public get leftHoneycombExtremity(): Honeycomb {
     return this._leftHoneycombExtremity;
   }
@@ -24,8 +23,8 @@ export class Main extends Phaser.Scene {
   }
   public static RED_COLOR = 0xffc4c8;
   public static SCENE_KEY = 'Main';
-  public static NUMBER_OF_BEES = 10;
-  public static RANDOM_BUILD_ANGLE_AMPLITUDE = 1.5;
+  public static NUMBER_OF_BEES = 30;
+  public static RANDOM_BUILD_ANGLE_AMPLITUDE = 1.25;
 
   private bees: Bee[] = [];
 
@@ -152,7 +151,7 @@ export class Main extends Phaser.Scene {
     this.add.rectangle(300, 453, 1200, 130, 0x89d18c);
 
     const newRandomBee = () => {
-      return new Bee(this, 400 + randomRange(-30, 30), 100 + randomRange(-30, 30));
+      return new Bee(this, 400 + randomRange(-100, 100), 100 + randomRange(-80, 130));
     };
 
     this.bees = Array(Main.NUMBER_OF_BEES)
