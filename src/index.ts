@@ -12,7 +12,7 @@ class PhaserGame extends Phaser.Game {
       width: 600,
       height: 450,
       zoom: 1,
-      backgroundColor: '#d0faff',
+      backgroundColor: '#dbfcff',
       plugins: {
         scene: [
           {
