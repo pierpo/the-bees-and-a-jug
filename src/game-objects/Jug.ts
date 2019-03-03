@@ -2,7 +2,7 @@ import { Main } from '../scenes/Main';
 import { InitialHoneycomb } from './InitialHoneycomb';
 
 export class Jug {
-
+  public static COLOR = 0xffc4c8;
   public static RADIUS = 5;
   public static NUMBER_OF_CIRCLES = 150;
   private scene: Main;
@@ -91,7 +91,7 @@ export class Jug {
           currentPointInPath.x + offset.x,
           currentPointInPath.y + offset.y,
           5,
-          Main.RED_COLOR,
+          Jug.COLOR,
         );
         return this.scene.matter.add.gameObject(newCircle, { isStatic: true });
       });
@@ -117,12 +117,14 @@ export class Jug {
           };
         }
 
-        if (hasPassedLowCutoffStep && hasntPassedHighCutoffStep) { return; }
+        if (hasPassedLowCutoffStep && hasntPassedHighCutoffStep) {
+          return;
+        }
         const newCircle = this.scene.add.circle(
           currentPointInPath.x + offset.x,
           currentPointInPath.y + offset.y,
           Jug.RADIUS,
-          Main.RED_COLOR,
+          Jug.COLOR,
         );
         return this.scene.matter.add.gameObject(newCircle, { isStatic: true });
       });

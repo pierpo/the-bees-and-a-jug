@@ -21,7 +21,6 @@ export class Main extends Phaser.Scene {
   public set rightHoneycombExtremity(value: Honeycomb) {
     this._rightHoneycombExtremity = value;
   }
-  public static RED_COLOR = 0xffc4c8;
   public static SCENE_KEY = 'Main';
   public static NUMBER_OF_BEES = 30;
   public static RANDOM_BUILD_ANGLE_AMPLITUDE = 1.25;
