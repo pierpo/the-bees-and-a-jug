@@ -138,19 +138,25 @@ export class Main extends Phaser.Scene {
     this.checkFullscreen();
     this.matter.world.setBounds();
 
-    this.flowers = [
-      new Flower(this, 400 + randomRange(-30, 30), 388, 0.3 + randomRange(-0.05, 0.05)),
-      new Flower(this, 490 + randomRange(-30, 30), 388, 0.2 + randomRange(-0.05, 0.05)),
-      new Flower(this, 550 + randomRange(-30, 30), 388, 0.25 + randomRange(-0.05, 0.05)),
-    ];
-    new Jug(this);
-
     // Sun
     this.add.circle(70 + randomIntRange(-30, 400), 50, 50, 0xffff78);
 
     new Cloud(this, 0, 0);
     new Cloud(this, 200, 20);
     new Cloud(this, 400, 10);
+
+    this.add.ellipse(100, 600, 850, 900, 0xc4ffc6);
+    this.add.ellipse(500, 600, 650, 900, 0xc4ffc6);
+    this.add.ellipse(-100, 550, 800, 600, 0xa5efa8);
+    this.add.ellipse(300, 750, 900, 900, 0xa5efa8);
+    this.add.ellipse(600, 450, 500, 500, 0xa5efa8);
+
+    this.flowers = [
+      new Flower(this, 400 + randomRange(-30, 30), 388, 0.3 + randomRange(-0.05, 0.05)),
+      new Flower(this, 490 + randomRange(-30, 30), 388, 0.2 + randomRange(-0.05, 0.05)),
+      new Flower(this, 550 + randomRange(-30, 30), 388, 0.25 + randomRange(-0.05, 0.05)),
+    ];
+    new Jug(this);
 
     // Ground
     this.add.rectangle(300, 453, 1200, 130, 0x89d18c);
