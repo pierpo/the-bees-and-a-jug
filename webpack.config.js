@@ -22,7 +22,7 @@ module.exports = {
       template: './src/index.html',
     }),
     new CopyWebpackPlugin([{ from: 'assets', to: 'assets' }]),
-    new FaviconsWebpackPlugin('assets/bee.png'),
+    new FaviconsWebpackPlugin('./assets/bee.png'),
   ],
   output: {
     filename: 'bundle.js',
