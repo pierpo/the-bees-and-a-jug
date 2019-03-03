@@ -63,6 +63,18 @@ export class Bee extends Phaser.GameObjects.Sprite {
     });
   }
 
+  private waitALittleBit(delay: number): Promise<void> {
+    return new Promise(resolve => {
+      this.scene.time.addEvent({
+        delay,
+        callbackScope: this,
+        callback: () => {
+          resolve();
+        },
+      });
+    });
+  }
+
   public getMass(): number {
     return this.matterGameObject.body.mass;
   }
@@ -103,12 +115,14 @@ export class Bee extends Phaser.GameObjects.Sprite {
     return this.moveTo(honeycomb.x, honeycomb.y - BuiltHoneycomb.RADIUS * 2);
   }
 
-  public moveApproximatelyToRandomFlower(): Promise<void> {
+  public moveApproximatelyToRandomFlowerAndStayALittleBit(): Promise<void> {
     const randomFlower = this.scene.flowers[randomIntRange(0, this.scene.flowers.length - 1)];
     return this.moveTo(
       randomFlower.flowerCorePosition.x + randomRange(-20, 20),
       randomFlower.flowerCorePosition.y + randomRange(-20, 20),
-    );
+    ).then(() => {
+      return this.waitALittleBit(randomRange(1000, 4000));
+    });
   }
 
   public buildHoneycomb() {
@@ -124,7 +138,7 @@ export class Bee extends Phaser.GameObjects.Sprite {
     const goToFlower = () => {
       this.moveTo(Bee.WAYPOINT_1.x + randomRange(-80, 80), Bee.WAYPOINT_1.y + randomRange(-20, 80))
         .then(() => {
-          return this.moveApproximatelyToRandomFlower();
+          return this.moveApproximatelyToRandomFlowerAndStayALittleBit();
         })
         .then(() => {
           if (this.scene.isHiveComplete()) {
