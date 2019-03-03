@@ -103,6 +103,14 @@ export class Bee extends Phaser.GameObjects.Sprite {
     return this.moveTo(honeycomb.x, honeycomb.y - BuiltHoneycomb.RADIUS * 2);
   }
 
+  public moveApproximatelyToRandomFlower(): Promise<void> {
+    const randomFlower = this.scene.flowers[0];
+    return this.moveTo(
+      randomFlower.flowerCorePosition.x + randomRange(-40, 40),
+      randomFlower.flowerCorePosition.y + randomRange(-40, 40),
+    );
+  }
+
   public buildHoneycomb() {
     if (this.isAWanderer) {
       this.wanderAround();
@@ -114,20 +122,16 @@ export class Bee extends Phaser.GameObjects.Sprite {
     this.moveToHoneycomb(honeycomb).then();
 
     const goToFlower = () => {
-      this.moveTo(
-        Bee.WAYPOINT_1.x + randomRange(-80, 80),
-        Bee.WAYPOINT_1.y + randomRange(-20, 80),
-      ).then(() => {
-        return this.moveTo(
-          this.scene.flower.flowerCorePosition.x + randomRange(-40, 40),
-          this.scene.flower.flowerCorePosition.y + randomRange(-40, 40),
-        ).then(() => {
+      this.moveTo(Bee.WAYPOINT_1.x + randomRange(-80, 80), Bee.WAYPOINT_1.y + randomRange(-20, 80))
+        .then(() => {
+          return this.moveApproximatelyToRandomFlower();
+        })
+        .then(() => {
           if (this.scene.isHiveComplete()) {
             return;
           }
           this.buildHoneycomb();
         });
-      });
     };
 
     honeycomb.on(BuiltHoneycomb.BUILT_EVENT, goToFlower);

@@ -25,7 +25,7 @@ export class Main extends Phaser.Scene {
   public static NUMBER_OF_BEES = 30;
   public static RANDOM_BUILD_ANGLE_AMPLITUDE = 1.25;
 
-  public flower: Flower;
+  public flowers: Flower[];
   private bees: Bee[] = [];
 
   private _leftHoneycombExtremity: Honeycomb;
@@ -138,7 +138,7 @@ export class Main extends Phaser.Scene {
     this.checkFullscreen();
     this.matter.world.setBounds();
 
-    this.flower = new Flower(this, 400, 313);
+    this.flowers = [new Flower(this, 400, 313)];
     new Jug(this);
 
     // Sun
