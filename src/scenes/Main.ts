@@ -8,6 +8,7 @@ export class Main extends Phaser.Scene {
   static RED_COLOR = 0xffc4c8;
   static SCENE_KEY = 'Main';
   static NUMBER_OF_BEES = 10;
+  static RANDOM_BUILD_ANGLE_AMPLITUDE = 1.5;
 
   constructor() {
     super(Main.SCENE_KEY);
@@ -75,8 +76,10 @@ export class Main extends Phaser.Scene {
     const leftToRightHoneycomb = rightHoneycombPosition.subtract(leftHoneycombPosition);
     const directionBetweenHoneycombs = leftToRightHoneycomb.normalize();
 
-    const randomAngleAmplitude = 2;
-    const randomDeltaAngle = Math.random() * randomAngleAmplitude - randomAngleAmplitude / 2;
+    const randomDeltaAngle = randomRange(
+      -Main.RANDOM_BUILD_ANGLE_AMPLITUDE,
+      Main.RANDOM_BUILD_ANGLE_AMPLITUDE,
+    );
 
     const newRandomAngle = leftToRightHoneycomb.angle() + randomDeltaAngle;
     directionBetweenHoneycombs.setToPolar(newRandomAngle);
