@@ -20,6 +20,7 @@ module.exports = {
       title: 'Phaser3 Simple RPG',
       template: './src/index.html',
     }),
+    new CopyWebpackPlugin([{ from: 'assets', to: 'assets' }]),
   ],
   output: {
     filename: 'bundle.js',
