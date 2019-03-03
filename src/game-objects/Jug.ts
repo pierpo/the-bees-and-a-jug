@@ -14,6 +14,14 @@ export class Jug {
     this.initHoneycombs(firstCutoff, lastCutoff);
   }
 
+  private hasPassedLowCutoff(step: number): boolean {
+    return step > 0;
+  }
+
+  private hasntPassedHighCutoff(step: number): boolean {
+    return step < (2 * Jug.NUMBER_OF_CIRCLES) / 7;
+  }
+
   private initHoneycombs(pos1, pos2) {
     this.scene.rightHoneycombExtremity = new InitialHoneycomb(this.scene, pos1.x, pos1.y);
     this.scene.leftHoneycombExtremity = new InitialHoneycomb(this.scene, pos2.x, pos2.y);
@@ -94,14 +102,14 @@ export class Jug {
       .fill(0)
       .map((_, index) => {
         const currentPointInPath = path.getPoint(index / Jug.NUMBER_OF_CIRCLES);
-        const hasPassedLowCutoffStep = index > Jug.NUMBER_OF_CIRCLES / 7;
+        const hasPassedLowCutoffStep = this.hasPassedLowCutoff(index);
         if (hasPassedLowCutoffStep) {
           firstCutoff = firstCutoff || {
             x: currentPointInPath.x + offset.x,
             y: currentPointInPath.y + offset.y,
           };
         }
-        const hasntPassedHighCutoffStep = index < (2 * Jug.NUMBER_OF_CIRCLES) / 7;
+        const hasntPassedHighCutoffStep = this.hasntPassedHighCutoff(index);
         if (!hasntPassedHighCutoffStep) {
           lastCutoff = lastCutoff || {
             x: currentPointInPath.x + offset.x,
