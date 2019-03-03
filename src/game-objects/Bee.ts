@@ -11,6 +11,8 @@ export class Bee extends Phaser.GameObjects.Sprite {
 
   static HAS_ARRIVED_EVENT = 'has-arrived';
 
+  static SPRITE_SCALE = 0.25;
+
   static RADIUS = 7;
   static THRUST_POWER = 0.05;
   static MASS = 0.6;
@@ -30,7 +32,7 @@ export class Bee extends Phaser.GameObjects.Sprite {
   constructor(scene: Main, x: number, y: number) {
     super(scene, x, y, 'bee');
     this.scene = scene;
-    this.setScale(0.25);
+    this.setScale(Bee.SPRITE_SCALE);
     this.scene.add.existing(this);
 
     this.xGoal = x;
