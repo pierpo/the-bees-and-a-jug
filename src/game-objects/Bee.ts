@@ -119,8 +119,8 @@ export class Bee extends Phaser.GameObjects.Sprite {
         Bee.WAYPOINT_1.y + randomRange(-20, 80),
       ).then(() => {
         return this.moveTo(
-          Bee.WAYPOINT_2.x + randomRange(-40, 40),
-          Bee.WAYPOINT_2.y + randomRange(-40, 40),
+          this.scene.flower.flowerCorePosition.x + randomRange(-40, 40),
+          this.scene.flower.flowerCorePosition.y + randomRange(-40, 40),
         ).then(() => {
           if (this.scene.isHiveComplete()) {
             return;
