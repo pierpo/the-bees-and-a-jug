@@ -4,6 +4,9 @@ import { InitialHoneycomb } from './InitialHoneycomb';
 export class Jug {
   private scene: Main;
 
+  static RADIUS = 5;
+  static NUMBER_OF_CIRCLES = 150;
+
   constructor(scene: Main) {
     this.scene = scene;
 
@@ -70,38 +73,50 @@ export class Jug {
       new Phaser.Math.Vector2(51.320084666501806, 65.57874234929355),
     ]);
 
-    const position = { x: 100, y: 150 };
+    const offset = { x: 60, y: 180 };
 
-    const len = 150;
-
-    // @ts-ignore
-    const hanceMatter = Array(len)
+    Array(Jug.NUMBER_OF_CIRCLES)
       .fill(0)
       .map((_, index) => {
-        const a = hance.getPoint(index / len);
-        const c = this.scene.add.circle(a.x + position.x, a.y + position.y, 5, Main.RED_COLOR);
-        return this.scene.matter.add.gameObject(c, { isStatic: true });
+        const currentPointInPath = hance.getPoint(index / Jug.NUMBER_OF_CIRCLES);
+        const newCircle = this.scene.add.circle(
+          currentPointInPath.x + offset.x,
+          currentPointInPath.y + offset.y,
+          5,
+          Main.RED_COLOR,
+        );
+        return this.scene.matter.add.gameObject(newCircle, { isStatic: true });
       });
 
     let firstCutoff = null;
     let lastCutoff = null;
-    // @ts-ignore
-    const pathMatter = Array(len)
+    Array(Jug.NUMBER_OF_CIRCLES)
       .fill(0)
       .map((_, index) => {
-        const a = path.getPoint(index / len);
-        const inf = index > len / 7;
-        if (inf) {
-          firstCutoff = firstCutoff || { x: a.x + position.x, y: a.y + position.y };
+        const currentPointInPath = path.getPoint(index / Jug.NUMBER_OF_CIRCLES);
+        const hasPassedLowCutoffStep = index > Jug.NUMBER_OF_CIRCLES / 7;
+        if (hasPassedLowCutoffStep) {
+          firstCutoff = firstCutoff || {
+            x: currentPointInPath.x + offset.x,
+            y: currentPointInPath.y + offset.y,
+          };
         }
-        const sup = index < (2 * len) / 7;
-        if (!sup) {
-          lastCutoff = lastCutoff || { x: a.x + position.x, y: a.y + position.y };
+        const hasntPassedHighCutoffStep = index < (2 * Jug.NUMBER_OF_CIRCLES) / 7;
+        if (!hasntPassedHighCutoffStep) {
+          lastCutoff = lastCutoff || {
+            x: currentPointInPath.x + offset.x,
+            y: currentPointInPath.y + offset.y,
+          };
         }
 
-        if (inf && sup) return;
-        const c = this.scene.add.circle(a.x + position.x, a.y + position.y, 5, Main.RED_COLOR);
-        return this.scene.matter.add.gameObject(c, { isStatic: true });
+        if (hasPassedLowCutoffStep && hasntPassedHighCutoffStep) return;
+        const newCircle = this.scene.add.circle(
+          currentPointInPath.x + offset.x,
+          currentPointInPath.y + offset.y,
+          Jug.RADIUS,
+          Main.RED_COLOR,
+        );
+        return this.scene.matter.add.gameObject(newCircle, { isStatic: true });
       });
 
     return {
