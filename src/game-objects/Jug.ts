@@ -92,7 +92,7 @@ export class Jug {
       new Phaser.Math.Vector2(51.320084666501806, 65.57874234929355),
     ]);
 
-    const offset = { x: 60, y: 180 };
+    const offset = { x: 50 + randomIntRange(-20, 20), y: 180 };
 
     Array(Jug.NUMBER_OF_CIRCLES)
       .fill(0)
