@@ -8,7 +8,7 @@ const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 module.exports = {
   entry: './src/index.ts',
   mode: 'development',
-  devtool: 'source-map',
+  devtool: 'eval-source-map',
   module: {
     rules: [
       {
