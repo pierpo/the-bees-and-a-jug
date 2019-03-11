@@ -22,8 +22,8 @@ export class Bee extends Phaser.GameObjects.Sprite {
   public matterGameObject: any;
   public scene: Main;
 
-  private xGoal;
-  private yGoal;
+  private xGoal: number;
+  private yGoal: number;
 
   private latestYPositions = [];
   private latestXPositions = [];
@@ -60,18 +60,6 @@ export class Bee extends Phaser.GameObjects.Sprite {
       callback: () => {
         this.fly();
       },
-    });
-  }
-
-  private waitALittleBit(delay: number): Promise<void> {
-    return new Promise(resolve => {
-      this.scene.time.addEvent({
-        delay,
-        callbackScope: this,
-        callback: () => {
-          resolve();
-        },
-      });
     });
   }
 
@@ -151,7 +139,7 @@ export class Bee extends Phaser.GameObjects.Sprite {
     honeycomb.on(BuiltHoneycomb.BUILT_EVENT, goToFlower);
   }
 
-  wanderAround(): void {
+  public wanderAround(): void {
     this.moveTo(300 + randomIntRange(-50, 50), 100 + randomIntRange(-30, 30))
       .then(() => {
         return this.moveTo(350 + randomIntRange(-30, 30), 200 + randomIntRange(-30, 30));
@@ -180,6 +168,18 @@ export class Bee extends Phaser.GameObjects.Sprite {
     const currentY = this.matterGameObject.body.position.y;
     this.latestYPositions.pop();
     this.latestYPositions.unshift(currentY);
+  }
+
+  private waitALittleBit(delay: number): Promise<void> {
+    return new Promise(resolve => {
+      this.scene.time.addEvent({
+        delay,
+        callbackScope: this,
+        callback: () => {
+          resolve();
+        },
+      });
+    });
   }
 
   private computeVelocityStabilizerAngle(velocityX: number) {

@@ -8,7 +8,6 @@
     "no-reference-import": [false],
     "object-literal-sort-keys": [false],
     "arrow-parens": [true, "ban-single-arg-parens"],
-    "no-duplicate-case": [true],
     "no-constant-condition": [true],
     "no-duplicate-case": [true],
     "no-empty-character-class": [true],
@@ -23,7 +22,13 @@
     "no-unexpected-multiline": [true],
     "valid-jsdoc": [true],
     "valid-typeof": [true],
-    "no-control-regex": [true]
+    "no-control-regex": [true],
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-leading-underscore"
+    ]
   },
   "rulesDirectory": []
 }

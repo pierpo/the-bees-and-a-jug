@@ -1,7 +1,6 @@
 import { Honeycomb } from './Honeycomb';
 
 export class BuiltHoneycomb extends Honeycomb {
-
   public get hasBeenTouchedByBee() {
     return this._hasBeenTouchedByBee;
   }
@@ -65,7 +64,9 @@ export class BuiltHoneycomb extends Honeycomb {
   }
 
   private shouldGrow(): boolean {
-    if (!this.hasBeenTouchedByBee) { return false; }
+    if (!this.hasBeenTouchedByBee) {
+      return false;
+    }
 
     const maxScale = BuiltHoneycomb.RADIUS / BuiltHoneycomb.INITIAL_RADIUS;
     return this.scale < maxScale;

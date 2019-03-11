@@ -82,7 +82,7 @@ export class Main extends Phaser.Scene {
       return this.matterCollision.addOnCollideStart({
         objectA: bee,
         objectB: this.leftHoneycombExtremity,
-        callback: eventData => {
+        callback: (eventData: { gameObjectB: any }) => {
           // @ts-ignore
           const { gameObjectB } = eventData;
 
@@ -94,6 +94,7 @@ export class Main extends Phaser.Scene {
 
     if (this.isHiveComplete()) {
       this.leftHoneycombExtremity.on(BuiltHoneycomb.BUILT_EVENT, () => {
+        // tslint:disable-next-line
         console.log('The hive is complete!');
       });
     }
@@ -141,8 +142,11 @@ export class Main extends Phaser.Scene {
     // Sun
     this.add.circle(70 + randomIntRange(-30, 400), 50, 50, 0xffff78);
 
+    // tslint:disable-next-line
     new Cloud(this, 0, 0);
+    // tslint:disable-next-line
     new Cloud(this, 200, 20);
+    // tslint:disable-next-line
     new Cloud(this, 400, 10);
 
     this.add.ellipse(100, 600, 850, 900, 0xc4ffc6);
@@ -156,6 +160,8 @@ export class Main extends Phaser.Scene {
       new Flower(this, 490 + randomRange(-30, 30), 388, 0.2 + randomRange(-0.05, 0.05)),
       new Flower(this, 550 + randomRange(-30, 30), 388, 0.25 + randomRange(-0.05, 0.05)),
     ];
+
+    // tslint:disable-next-line
     new Jug(this);
 
     // Ground
